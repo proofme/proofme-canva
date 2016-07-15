@@ -1,11 +1,32 @@
 "use strict"
 
 $(".editorActionShare").on("click", function() {
-    $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on Twitter">Send to ProofMe</button>`)
+    $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on Twitter">
+    <img src="https://raw.githubusercontent.com/proofme/proofme-canva/26d03768dbaf28ee5ccd413e2fce78c18f5a3f8d/images/proofme-button-icon.png" alt="ProofMe" style="height: 33px; width: 33px; vertical-align: bottom;">
+    Send to ProofMe</button>`)
     $(".buttonProofMe").css("background", "#6ACD00")
 
     $(".buttonProofMe").on("click", function() {
 
+
+        var progressDialog = $(`
+            <div style="position: fixed; width:100%;height:100%; z-index:10000">
+            <div align="center" class="proofme-import-modal">
+            <div class="converting-loader"><div class="circles"><div class="loader6"></div><div class="loader7"></div></div><div class="converting-loader-label" style="color: rgba(0, 180, 255, .9);"">Importing Files to ProofMe</div></div>
+            </div>
+            </div>
+
+        `);
+
+            $('body').append(progressDialog)
+
+
+
+        function b64EncodeUnicode(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+        }
         function getPDFUrl(id, token) {
             const PDFUrlRequest = $.ajax({
               url: `/_ajax/export/${id}`,
@@ -23,8 +44,8 @@ $(".editorActionShare").on("click", function() {
 
                 if (res.export.status === "COMPLETE") {
                     const PDFUrl = res.export.output.exportBlobs[0].url
-                    window.location.href = PDFUrl
-                    window.open(`https://www.google.com/?q=${PDFUrl}`)
+                    progressDialog.remove();
+                    window.open(`https://master.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}`)
                     return
                 }
 
@@ -44,7 +65,7 @@ $(".editorActionShare").on("click", function() {
                   'x-csrf-token': token
               },
               method: "POST",
-              data: JSON.stringify({"attachment":true,"docId":docId,"docVersion":docVersion,"spec":{"mediaDpi":300,"mediaQuality":"PRINT","bleed":false,"crops":false,"removeCanvas":false,"pages": pages,"targetImageSizeKb":null,"format":"PDF","type":"PRINT"}}),
+              data: JSON.stringify({"attachment":true,"docId":docId,"docVersion":docVersion,"spec":{"mediaDpi":300,"mediaQuality":"SCREEN","bleed":false,"crops":false,"removeCanvas":false,"pages": pages,"targetImageSizeKb":null,"format":"PDF","type":"SCREEN"}}),
               dataType: "text"
             });
 
