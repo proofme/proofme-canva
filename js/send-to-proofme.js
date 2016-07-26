@@ -1,5 +1,7 @@
 "use strict"
 
+const docId = window.location.href.split("design/")[1].split("/")[0]
+
 $(".editorActionShare").on("click", function() {
     $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on Twitter">
     <img src="https://raw.githubusercontent.com/proofme/proofme-canva/26d03768dbaf28ee5ccd413e2fce78c18f5a3f8d/images/proofme-button-icon.png" alt="ProofMe" style="height: 33px; width: 33px; vertical-align: bottom;">
@@ -9,7 +11,7 @@ $(".editorActionShare").on("click", function() {
     $(".buttonProofMe").on("click", function() {
 
 
-        var progressDialog = $(`
+        const progressDialog = $(`
             <div style="position: fixed; width:100%;height:100%; z-index:10000">
             <div align="center" class="proofme-import-modal">
             <div class="converting-loader"><div class="circles"><div class="loader6"></div><div class="loader7"></div></div><div class="converting-loader-label" style="color: rgba(0, 180, 255, .9);"">Importing Files to ProofMe</div></div>
@@ -45,7 +47,7 @@ $(".editorActionShare").on("click", function() {
                 if (res.export.status === "COMPLETE") {
                     const PDFUrl = res.export.output.exportBlobs[0].url
                     progressDialog.remove();
-                    window.open(`https://master.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}`)
+                    window.open(`https://local.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`)
                     return
                 }
 
@@ -92,7 +94,6 @@ $(".editorActionShare").on("click", function() {
           const token = msg.split(`//"`)[1].replace(`"`, ``)
           const numOfPages = $("section.page").length
           const pages = []
-          const docId = window.location.href.split("design/")[1].split("/")[0]
           for (let i = 1; i <= numOfPages; i++) {
               pages.push(i)
           }
