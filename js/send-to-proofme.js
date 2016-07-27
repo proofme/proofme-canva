@@ -1,26 +1,145 @@
 "use strict"
 
+const proofmeCluster = "local"
 const docId = window.location.href.split("design/")[1].split("/")[0]
+const proofmeiFrame = `https://${proofmeCluster}.proofme.com/emptyCanva`;
+let proofExists = false;
+
+
+$(".editorActionShare").append(`<iframe id="proofme-iframe-receiver" src=${proofmeiFrame} width="0" height="0" style="display: none;">`)
+let contentWindow
+let notLetBarFinish = true
+const iframe = document.getElementById('proofme-iframe-receiver');
+iframe.onload = function(){
+
+    askProofMe();
+}
+
+
+function askProofMe(){
+    contentWindow = iframe.contentWindow;
+    contentWindow.postMessage({
+        reason: "windowOnLoad",
+        canvaID: docId
+    }, '*');
+}
+
+
+
+function setDocumentHasProof(){
+    proofExists = true
+
+    $('.buttonProofMe').html(`
+        <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-version%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+        Update in ProofMe
+    `)
+
+}
+
+
+function receiveMessage(event) {
+    if (event.origin != `https://${proofmeCluster}.proofme.com`){
+        return;
+    }
+    console.log("canva received event: ", event);
+    if (event.data.reason === "windowOnLoad") {
+        setDocumentHasProof()
+    } else if (event.data.reason === "getPDFUrl") {
+
+        notLetBarFinish = false
+
+        setTimeout( () => {
+            $(".bottomPart").css({"background": "#6ACD00"})
+            $("#loading-message").remove()
+            $(".beforeProgressBar").remove()
+            $("#myProgress").remove()
+            $("#bottomMessage").text("Success!")
+            $("#bottomMessage").css({"color": "white"})
+            $("#PDFUrl").html(`
+
+                <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+
+                <div style="padding: 10px;">
+                    <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
+                </div>
+                `)
+        }, 200)
+    }
+
+
+}
+window.addEventListener("message", receiveMessage, false);
 
 $(".editorActionShare").on("click", function() {
-    $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on Twitter">
-    <img src="https://raw.githubusercontent.com/proofme/proofme-canva/26d03768dbaf28ee5ccd413e2fce78c18f5a3f8d/images/proofme-button-icon.png" alt="ProofMe" style="height: 33px; width: 33px; vertical-align: bottom;">
-    Send to ProofMe</button>`)
-    $(".buttonProofMe").css("background", "#6ACD00")
+    $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on ProofMe">
+    <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+    ${proofExists?"Update in ProofMe" : "Send to ProofMe"}</button>`)
 
     $(".buttonProofMe").on("click", function() {
 
-
+        $(".shareDialog").hide()
         const progressDialog = $(`
             <div style="position: fixed; width:100%;height:100%; z-index:10000">
-            <div align="center" class="proofme-import-modal">
-            <div class="converting-loader"><div class="circles"><div class="loader6"></div><div class="loader7"></div></div><div class="converting-loader-label" style="color: rgba(0, 180, 255, .9);"">Importing Files to ProofMe</div></div>
-            </div>
+
+                <div align="center" class="proofme-import-modal">
+                <span class="closePopup">╳</span>
+                    <div>
+
+                    </div>
+                    <div class="centerPart">
+                        <div class="circleLogo">
+                            <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
+                        </div>
+                        <span id="loading-message">Creating a proof out of your design...</span>
+                        <div class="beforeProgressBar" style="height: 10px;"> </div>
+                        <div id="myProgress">
+                            <div id="myBar"></div>
+                        </div>
+                        <div class="beforeProgressBar" style="height: 15px;"> </div>
+
+                        <div style="">
+                            <span id="PDFUrl"></span>
+                        </div>
+                    </div>
+                    <div class="bottomPart">
+                        <span id="bottomMessage">It's not great until you iterate!</span>
+                    </div>
+                </div>
             </div>
 
         `);
 
-            $('body').append(progressDialog)
+        $('body').append(progressDialog)
+
+        $(".closePopup").on("click", function() {
+            progressDialog.remove()
+            $(".modalContent").remove()
+        });
+
+
+        let defaultSpeed = 5
+        let width = 1;  // can't omit this semicolon
+
+        (function increaseBar(speed) {
+            setTimeout( () => {
+
+                width += 0.10 + Math.pow(Math.random(), 3)
+                if (width > 100) width = 100
+                $("#myBar").css({"width": `${width}%`})
+
+                if (width < 100) {
+                    if (!notLetBarFinish) {
+                        increaseBar(1)
+                    }
+                    else if (width > 80) {
+                        increaseBar( 5 * Math.pow((width-80), 1.5))
+                    } else {
+                        increaseBar(defaultSpeed)
+                    }
+                }
+            }, speed);
+        })()
+
 
 
 
@@ -45,9 +164,14 @@ $(".editorActionShare").on("click", function() {
                 res = JSON.parse(res.split("</x>//")[1])
 
                 if (res.export.status === "COMPLETE") {
+
                     const PDFUrl = res.export.output.exportBlobs[0].url
-                    progressDialog.remove();
-                    window.open(`https://local.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`)
+                    contentWindow.postMessage({
+                        reason: "getPDFUrl",
+                        url: `https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                    }, '*');
+
+                    setDocumentHasProof()
                     return
                 }
 
