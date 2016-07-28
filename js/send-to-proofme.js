@@ -90,7 +90,7 @@ $(".editorActionShare").on("click", function() {
                         <div class="circleLogo">
                             <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                         </div>
-                        <span id="loading-message">Creating a proof out of your design...</span>
+                        <span id="loading-message">Exporting your design to ProofMe...</span>
                         <div class="beforeProgressBar" style="height: 10px;"> </div>
                         <div id="myProgress">
                             <div id="myBar"></div>
