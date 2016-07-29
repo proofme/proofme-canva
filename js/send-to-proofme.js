@@ -11,10 +11,14 @@ let contentWindow
 let notLetBarFinish = true
 const iframe = document.getElementById('proofme-iframe-receiver');
 iframe.onload = function(){
-
-    askProofMe();
+    askProofMe()
 }
 
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1)
+    }))
+}
 
 function askProofMe(){
     contentWindow = iframe.contentWindow;
@@ -43,6 +47,7 @@ function receiveMessage(event) {
     }
     console.log("canva received event: ", event);
     if (event.data.reason === "windowOnLoad") {
+        console.log("unreadCount: ", event.data.unreadCount)
         setDocumentHasProof()
     } else if (event.data.reason === "getPDFUrl") {
 
@@ -63,19 +68,57 @@ function receiveMessage(event) {
                     <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
                 </div>
                 `)
-        }, 200)
+        }, 300)
     }
 
 
 }
-window.addEventListener("message", receiveMessage, false);
+window.addEventListener("message", receiveMessage, false)
+
+$(".editorActionExport").on("click", () => {
+    $(".buttonBlock").on("click", () => {
+            ;(function checkText () {
+                    setTimeout( () => {
+                    if ($(".center").html() === "Your design is ready") {
+                        $(".shareButtons").append(`
+                            <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
+                            <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+                            ${proofExists?"Update in ProofMe" : "Send to ProofMe"}
+                            </button>
+                        `)
+
+                        $(".buttonRedirect").on("click", () => {
+                            window.open(`https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
+                        })
+
+                    } else {
+                        checkText ()
+                    }
+
+                }, 300)
+            })()
+    })
+})
+
+
+
+
+
+
+
+
+
+
 
 $(".editorActionShare").on("click", function() {
-    $(".shareButtons").append(`<button class="button buttonProofMe" title="Share on ProofMe">
-    <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
-    ${proofExists?"Update in ProofMe" : "Send to ProofMe"}</button>`)
+    $(".shareButtons").append(`
+        <button class="button buttonProofMe buttonExport" title="Share on ProofMe">
+        <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+        ${proofExists?"Update in ProofMe" : "Send to ProofMe"}
+        </button>
+    `)
 
-    $(".buttonProofMe").on("click", function() {
+    $(".buttonExport").on("click", function() {
 
         $(".shareDialog").hide()
         const progressDialog = $(`
@@ -107,20 +150,19 @@ $(".editorActionShare").on("click", function() {
                 </div>
             </div>
 
-        `);
+        `)
 
         $('body').append(progressDialog)
 
         $(".closePopup").on("click", function() {
             progressDialog.remove()
             $(".modalContent").remove()
-        });
+        })
 
 
         let defaultSpeed = 5
-        let width = 1;  // can't omit this semicolon
-
-        (function increaseBar(speed) {
+        let width = 1
+        ;(function increaseBar(speed) {
             setTimeout( () => {
 
                 width += 0.10 + Math.pow(Math.random(), 3)
@@ -137,17 +179,10 @@ $(".editorActionShare").on("click", function() {
                         increaseBar(defaultSpeed)
                     }
                 }
-            }, speed);
+            }, speed)
         })()
 
 
-
-
-        function b64EncodeUnicode(str) {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-                return String.fromCharCode('0x' + p1);
-            }));
-        }
         function getPDFUrl(id, token) {
             const PDFUrlRequest = $.ajax({
               url: `/_ajax/export/${id}`,
