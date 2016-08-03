@@ -40,6 +40,26 @@ function setDocumentHasProof(){
 
 }
 
+function increaseBar(speed, width) {
+    setTimeout( () => {
+        width += 0.1 + Math.pow(Math.random(), 3)
+        if (width > 100) width = 100
+        $("#myBar").css({"width": `${width}%`})
+
+        if (width < 99) {
+            if (!notLetBarFinish) {
+                increaseBar(1, width)
+            }
+            else if (width > 80) {
+                increaseBar( 10 * Math.pow((width-80), 1.2), width)
+            } else {
+                increaseBar(10, width)
+            }
+        } else {
+            notLetBarFinish = true
+        }
+    }, speed)
+}
 
 function receiveMessage(event) {
     if (event.origin != `https://${proofmeCluster}.proofme.com`){
@@ -51,24 +71,33 @@ function receiveMessage(event) {
         setDocumentHasProof()
     } else if (event.data.reason === "getPDFUrl") {
 
-        notLetBarFinish = false
 
-        setTimeout( () => {
-            $(".bottomPart").css({"background": "#6ACD00"})
-            $("#loading-message").remove()
-            $(".beforeProgressBar").remove()
-            $("#myProgress").remove()
-            $("#bottomMessage").text("Success!")
-            $("#bottomMessage").css({"color": "white"})
-            $("#PDFUrl").html(`
+        $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}.proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
 
-                <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+        const iframeII = document.getElementById('proofme-load-proof');
+        iframeII.onload = function(){
+                $("#myBar").css({"width": `100%`})
+                setTimeout( () => {
+                    $(".bottomPart").css({"background": "#6ACD00"})
+                    $("#loading-message").remove()
+                    $(".beforeProgressBar").remove()
+                    $("#myProgress").remove()
+                    $("#bottomMessage").text("Success!")
+                    $("#bottomMessage").css({"color": "white"})
+                    $("#PDFUrl").html(`
 
-                <div style="padding: 10px;">
-                    <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
-                </div>
-                `)
-        }, 300)
+                        <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+
+                        <div style="padding: 10px;">
+                            <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
+                        </div>
+                        `)
+                    $("#proofme-load-proof").remove()
+                }, 10)
+
+
+
+        }
     }
 
 
@@ -88,7 +117,58 @@ $(".editorActionExport").on("click", () => {
                         `)
 
                         $(".buttonRedirect").on("click", () => {
-                            window.open(`https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
+                            $(".dialog").hide()
+
+
+                            const progressDialog = $(`
+                                <div style="position: fixed; width:100%;height:100%; z-index:10000">
+
+                                    <div align="center" class="proofme-import-modal">
+                                    <span class="closePopup">╳</span>
+                                        <div>
+
+                                        </div>
+                                        <div class="centerPart">
+                                            <div class="circleLogo">
+                                                <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
+                                            </div>
+                                            <span id="loading-message">Exporting your design to ProofMe...</span>
+                                            <div class="beforeProgressBar" style="height: 10px;"> </div>
+                                            <div id="myProgress">
+                                                <div id="myBar"></div>
+                                            </div>
+                                            <div class="beforeProgressBar" style="height: 15px;"> </div>
+
+                                            <div style="">
+                                                <span id="PDFUrl"></span>
+                                            </div>
+                                        </div>
+                                        <div class="bottomPart">
+                                            <span id="bottomMessage">It's not great until you iterate!</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            `)
+
+                            $('body').append(progressDialog)
+
+                            $(".closePopup").on("click", function() {
+                                $(".dialog").show()
+                                progressDialog.remove()
+                            })
+
+                            increaseBar(10, 1)
+
+                            const PDFUrl = $(".intro a").attr('href')
+                            contentWindow.postMessage({
+                                reason: "getPDFUrl",
+                                url: `https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                            }, '*');
+
+                            setDocumentHasProof()
+                            return
+                            // window.open(`https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
                         })
 
                     } else {
@@ -159,28 +239,7 @@ $(".editorActionShare").on("click", function() {
             $(".modalContent").remove()
         })
 
-
-        let defaultSpeed = 5
-        let width = 1
-        ;(function increaseBar(speed) {
-            setTimeout( () => {
-
-                width += 0.10 + Math.pow(Math.random(), 3)
-                if (width > 100) width = 100
-                $("#myBar").css({"width": `${width}%`})
-
-                if (width < 100) {
-                    if (!notLetBarFinish) {
-                        increaseBar(1)
-                    }
-                    else if (width > 80) {
-                        increaseBar( 5 * Math.pow((width-80), 1.5))
-                    } else {
-                        increaseBar(defaultSpeed)
-                    }
-                }
-            }, speed)
-        })()
+        increaseBar(10, 1)
 
 
         function getPDFUrl(id, token) {
