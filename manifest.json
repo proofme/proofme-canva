@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "ProofMe-Canva",
-  "description": "A quick way to import your canva project into a proof.",
-  "version": "0.2",
+  "description": "A quick way to export your canva design into a proof.",
+  "version": "0.3",
 
   "icons": {
       "16": "images/proofme-button-icon.png",
@@ -22,7 +22,6 @@
 
   "browser_action": {
     "default_icon": "images/proofme-button-icon.png",
-    "default_popup": "html/popup.html",
     "default_title": "ProofMe-Canva Beta"
   },
 

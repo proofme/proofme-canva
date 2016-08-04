@@ -46,7 +46,7 @@ function increaseBar(speed, width) {
         if (width > 100) width = 100
         $("#myBar").css({"width": `${width}%`})
 
-        if (width < 99) {
+        if (width < 98) {
             if (!notLetBarFinish) {
                 increaseBar(1, width)
             }
