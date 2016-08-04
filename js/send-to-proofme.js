@@ -106,9 +106,14 @@ window.addEventListener("message", receiveMessage, false)
 
 $(".editorActionExport").on("click", () => {
     $(".buttonBlock").on("click", () => {
-            ;(function checkText () {
-                    setTimeout( () => {
-                    if ($(".center").html() === "Your design is ready") {
+        let popupClosed = false
+        ;(function checkText () {
+                setTimeout( () => {
+                    $(".close").on("click", () => {
+                        popupClosed = true
+                    })
+                    console.log("popupClosed: ", popupClosed)
+                    if ($(".center").html() === "Your design is ready" && !popupClosed) {
                         $(".shareButtons").append(`
                             <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
                             <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
