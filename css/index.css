@@ -67,3 +67,132 @@
     height: 100%;
     background-color: #6ACD00;
 }
+
+
+
+.proofme-details-popup {
+    position: fixed;
+    width:400px;
+    /*min-height: 100px;*/
+    z-index:10000;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.hide-loader {
+    display: none;
+    padding-right: 5px;
+    height: 17px;
+    width: 17px;
+    transform: translateY(2px);
+}
+
+.annotation-item {
+    padding: 5px;
+    line-height: 22px;
+    /*background-size: 26px 19px;*/
+}
+
+.header {
+    display: inline;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.header::before{
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 20px 10px;
+    border-color: transparent transparent #ffffff transparent;
+    transform: translateX(183px) translateY(-20px);
+}
+
+.unread-count{
+    color: white;
+    padding-left: 5px;
+    padding-right: 6px;
+    background-image: url("https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-counter-bubble1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.read-count{
+    color: white;
+    padding-left: 5px;
+    padding-right: 6px;
+    background-image: url("https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-counter-bubble3.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.two-digits-count{
+    background-size: 27px 19px !important;
+}
+
+.fileAvatar{
+        float: right !important;
+        cursor: pointer;
+}
+
+.magicHr {
+    background:url('https://ci3.googleusercontent.com/proxy/iwLaYvpDu1bYzD9Ml9V51X5W4LYUeR_6QjGg_vvXdmtGendDG6TsD_mPFj2VQBhia70SRzSIKXUeA3dzdZIWnVuw2GC_M2OqaKKh86g82yAx3QSgwS63loDIzfs=s0-d-e1-ft#https://d1pgqke3goo8l6.cloudfront.net/nBbTUkDqR3WiJfLc6YRa_divider.png') no-repeat top/contain;
+    background-position:top;
+    background-repeat:no-repeat;
+    border:none;
+    min-height:2px;
+    margin:0;
+    padding:0;
+    opacity: 0.5;
+}
+
+.clip-2 {
+    position: absolute;
+    clip: rect(0px,40px,50px,16px);
+    transform: translateX(-16px);
+}
+
+.clip-3 {
+    position: absolute;
+    clip: rect(0px,30px,50px,12px);
+    transform: translateX(-12px);
+}
+
+.clip-4 {
+    position: absolute;
+    clip: rect(0px,20px,50px,8px);
+    transform: translateX(-8px);
+}
+
+.clip-5 {
+    position: absolute;
+    clip: rect(0px,19px,50px,7px);
+    transform: translateX(-7px);
+}
+
+/* tell the container's children to float left: */
+.float-my-children > * {
+    float:left;
+    margin-right:5px;
+}
+
+/* this is called a clearfix. it makes sure that the container's children floats are cleared, without using extra markup */
+
+.clearfix {
+    *zoom:1 /* for IE */
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* end clearfix*/

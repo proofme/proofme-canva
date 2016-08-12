@@ -14,7 +14,7 @@
   "content_scripts": [
       {
           "matches": ["https://www.canva.com/*"],
-          "js": ["js/jquery-3.0.0.min.js", "js/send-to-proofme.js"],
+          "js": ["js/jquery-3.0.0.min.js", "js/moment-2.14.1.min.js", "js/send-to-proofme.js", "js/lodash-4.14.2.min.js"],
           "css": ["css/index.css"]
       }
 
