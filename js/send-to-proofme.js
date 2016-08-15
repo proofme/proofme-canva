@@ -207,7 +207,7 @@ $( document ).ready( () =>  {
                     popup.append(listitem)
                 })
 
-                if (itemCount > 4) {
+                if ((itemCount > 4) && (filesSummary.length > 3)) {
                     const extraItem = $(`
                             <h3 style="text-align: center; cursor:pointer; onclick="window.open('${urlToProof}');"> • • • </h3>
                         `)
@@ -242,14 +242,14 @@ $( document ).ready( () =>  {
                         })
                     },
                     () => {
-                        $('.proofme-details-popup').fadeOut(2000, () => {
+                        $('.proofme-details-popup').fadeOut(1000, () => {
                             return false
                         })
                     }
                 )
             },
             () => {
-                $('.proofme-details-popup').fadeOut(2000, () => {
+                $('.proofme-details-popup').fadeOut(1000, () => {
                     return false
                 })
             }
@@ -344,6 +344,10 @@ $( document ).ready( () =>  {
 
                             <div style="padding: 10px;">
                                 <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
+                                <br />
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Add Reviewers</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Set Deadline</a>
                             </div>
                             `)
                         $("#proofme-load-proof").remove()
