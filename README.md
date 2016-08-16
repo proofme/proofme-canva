@@ -8,7 +8,7 @@ Add two buttons to canva's "Share" and "Download" menu.
 
 Also add a "Open Proof" button if proof exists*, including a tooltip if there are comments.
 
-When exporting a canva design to ProofMe, if proof exists*, we create a new file version. If not create we a new proof. 
+When exporting a canva design to ProofMe, if proof exists*, we create a new file version. If not create we a new proof.
 
 When Canva provides a zip file of images, where each image is one page of the design, ProofMe will still treat them as a single file model, and set download link to original zip file.
 

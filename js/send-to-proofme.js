@@ -374,6 +374,7 @@ $( document ).ready( () =>  {
                         })
                         logger("popupClosed: ", popupClosed)
                         if ($(".center").html() === "Your design is ready" && !popupClosed) {
+                            $(".buttonRedirect").remove()
                             $(".shareButtons").append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
                                 <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
