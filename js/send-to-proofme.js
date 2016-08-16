@@ -1,12 +1,12 @@
 "use strict"
 
-const proofmeCluster = "local"  // "", "dev", "master", "preflight", "local"
+const proofmeCluster = "local."  // "", "dev", "master", "preflight", "local"
 const docId = window.location.href.split("design/")[1].split("/")[0]
-const proofmeiFrame = `https://${proofmeCluster}.proofme.com/emptyCanva`;
+const proofmeiFrame = `https://${proofmeCluster}proofme.com/emptyCanva`;
 let proofExists = false
 let noOpenProofYet = true
 let popupOpened = false
-let urlToProof = `https://${proofmeCluster}.proofme.com`
+let urlToProof = `https://${proofmeCluster}proofme.com`
 let proofId
 let tooptipCache = {}
 let logger = () => {}
@@ -62,7 +62,7 @@ $( document ).ready( () =>  {
         `)
 
         // if (!noOpenProofYet) $("#open-proof").remove()
-        urlToProof = `https://${proofmeCluster}.proofme.com${proofUrl || ""}`
+        urlToProof = `https://${proofmeCluster}proofme.com${proofUrl || ""}`
         let classForCount = ""
         let countToUse
         if (unreadCount) {
@@ -139,7 +139,7 @@ $( document ).ready( () =>  {
                         logger("fileSummary.users: ", fileSummary.users)
                         const userIds = fileSummary.users
                         const oneUserId = userIds[0]
-                        const oneUserImg = `https://${proofmeCluster}.proofme.com${usersSummary[oneUserId].userPic}`
+                        const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         const userNames = []
                         _.forEach(userIds, userId => {
                             userNames.push(usersSummary[userId].userName)
@@ -153,7 +153,7 @@ $( document ).ready( () =>  {
                             <div class="annotation-item clearfix float-my-children">
                                 <img src="${oneUserImg}" width=52 height=50></img>
                                 <div><span>${shortedName} </span>  <span>${fileSummary.status === '1'? '👍': '👎'}  </span> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}.proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
+                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
                         `)
 
@@ -168,7 +168,7 @@ $( document ).ready( () =>  {
                             count++
                             if (count < 6) {
                                 userNames.push(usersSummary[user.id].userName)
-                                const oneUserImg = `https://${proofmeCluster}.proofme.com${usersSummary[user.id].userPic}`
+                                const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[user.id].userPic}`
                                 mixedImg += `<td><img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50"></td>`
                             } else {
                                 alert("@XMA: Reviewers number limit reached")
@@ -197,7 +197,7 @@ $( document ).ready( () =>  {
                                     </tbody>
                                 </table>
                                 <div><span>${shortedName} • ${time} <br /><span class="${classForCount}">${countToUse}</span><i  style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlToProof}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name } ${ " >"}</i></span></div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}.proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
+                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
 
                         `)
@@ -284,7 +284,7 @@ $( document ).ready( () =>  {
     let emptyBtnExist = false
 
     function receiveMessage(event) {
-        if (event.origin != `https://${proofmeCluster}.proofme.com`){
+        if (event.origin != `https://${proofmeCluster}proofme.com`){
             return;
         }
         logger("canva received event: ", event);
@@ -317,7 +317,7 @@ $( document ).ready( () =>  {
                 if (JSON.stringify(tooptipCache) !== JSON.stringify(data)) setDocumentHasProof(filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, data.proofUrl, totalCount)
             } else {
                 if (!emptyBtnExist) {
-                    urlToProof = `https://${proofmeCluster}.proofme.com${data.proofUrl || ""}`
+                    urlToProof = `https://${proofmeCluster}proofme.com${data.proofUrl || ""}`
                     const emptyBtn = `<li id="open-proof"><a class="button editorActionOpen prerollAnimation prerollDelay2.5" href="${urlToProof}" target="_blank"> Open Proof </a></li>`
                     $("#documentMenu").prepend(emptyBtn)
                     emptyBtnExist = true
@@ -328,7 +328,7 @@ $( document ).ready( () =>  {
         } else if (event.data.reason === "getPDFUrl") {
 
             proofId = proofId || event.data.proofId
-            $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}.proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
+            $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
 
             const iframeII = document.getElementById('proofme-load-proof');
             iframeII.onload = function(){
@@ -345,11 +345,11 @@ $( document ).ready( () =>  {
                             <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
 
                             <div style="padding: 10px;">
-                                <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
+                                <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
                                 <br />
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
                             </div>
                             `)
                         $("#proofme-load-proof").remove()
@@ -429,12 +429,12 @@ $( document ).ready( () =>  {
                                 const PDFUrl = $(".intro a").attr('href')
                                 contentWindow.postMessage({
                                     reason: "getPDFUrl",
-                                    url: `https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                                    url: `https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
                                 }, '*');
 
                                 askProofMe()
                                 return
-                                // window.open(`https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
+                                // window.open(`https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
                             })
 
                         } else {
@@ -528,7 +528,7 @@ $( document ).ready( () =>  {
                         const PDFUrl = res.export.output.exportBlobs[0].url
                         contentWindow.postMessage({
                             reason: "getPDFUrl",
-                            url: `https://${proofmeCluster}.proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                            url: `https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
                         }, '*');
 
                         askProofMe()
