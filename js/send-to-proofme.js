@@ -9,6 +9,8 @@ let popupOpened = false
 let urlToProof = `https://${proofmeCluster}.proofme.com`
 let proofId
 let tooptipCache = {}
+let logger = () => {}
+if (window.location.href.includes("?logger=true")) logger = function() {console.log(arguments)} // don't log stuff on live
 
 
 $( document ).ready( () =>  {
@@ -45,7 +47,7 @@ $( document ).ready( () =>  {
 
     ;(function keepAskingProofMe(){
             setTimeout( () => {
-                console.log("asking proofme")
+                logger("asking proofme")
                 askProofMe()
                 keepAskingProofMe()
             }, 3000)
@@ -53,7 +55,7 @@ $( document ).ready( () =>  {
 
     function setDocumentHasProof(filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl, itemCount){
         proofId = proofId || filesSummary[0].proof
-        console.log("===: ", filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl)
+        logger("===: ", filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl)
         $('.buttonProofMe').html(`
             <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-version%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
             Update in ProofMe
@@ -103,7 +105,7 @@ $( document ).ready( () =>  {
                 }
                 popupOpened = true
                 const buttonOffset = $("#openup").offset()
-                console.log(`$("#openup").offset(): `, $("#openup").offset())
+                logger(`$("#openup").offset(): `, $("#openup").offset())
 
                 const popup = $(`<div class="proofme-details-popup" style="transform: translateX(${buttonOffset.left - 185}px) translateY(55px)"></div>`)
                 unreadCount
@@ -131,10 +133,10 @@ $( document ).ready( () =>  {
                 _.forEach( filesSummary, fileSummary => {
                     let listitem
                     const time = moment(fileSummary.updated_timestamp).fromNow(true)
-                    console.log("time: ", time)
+                    logger("time: ", time)
                     if (fileSummary.comment_type === "ReviewDraft") {
-                        console.log("fileSummary: ", fileSummary)
-                        console.log("fileSummary.users: ", fileSummary.users)
+                        logger("fileSummary: ", fileSummary)
+                        logger("fileSummary.users: ", fileSummary.users)
                         const userIds = fileSummary.users
                         const oneUserId = userIds[0]
                         const oneUserImg = `https://${proofmeCluster}.proofme.com${usersSummary[oneUserId].userPic}`
@@ -285,11 +287,11 @@ $( document ).ready( () =>  {
         if (event.origin != `https://${proofmeCluster}.proofme.com`){
             return;
         }
-        console.log("canva received event: ", event);
+        logger("canva received event: ", event);
         try {
-            console.log("_.VERSION: ", _.VERSION)
+            logger("_.VERSION: ", _.VERSION)
         } catch (e) {
-            console.log("e: ", e)
+            logger("e: ", e)
         }
         if (event.data.reason === "windowOnLoad") {
             const data = event.data
@@ -307,9 +309,9 @@ $( document ).ready( () =>  {
                 }
             })
             const totalCount = data.totalCountOfAnnots
-            console.log("totalCount: ", totalCount)
-            console.log("unreadCount: ", unreadCount)
-            console.log("proofUrl: ", data.proofUrl)
+            logger("totalCount: ", totalCount)
+            logger("unreadCount: ", unreadCount)
+            logger("proofUrl: ", data.proofUrl)
             proofExists = true
             if (totalCount > 0) {
                 if (JSON.stringify(tooptipCache) !== JSON.stringify(data)) setDocumentHasProof(filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, data.proofUrl, totalCount)
@@ -325,7 +327,7 @@ $( document ).ready( () =>  {
             tooptipCache = data
         } else if (event.data.reason === "getPDFUrl") {
 
-
+            proofId = proofId || event.data.proofId
             $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}.proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
 
             const iframeII = document.getElementById('proofme-load-proof');
@@ -346,8 +348,8 @@ $( document ).ready( () =>  {
                                 <a style="color: #04BCFF;" href='https://${proofmeCluster}.proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}.proofme.com${event.data.PDFUrl}</a>
                                 <br />
                                 <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Add Reviewers</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Set Deadline</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}.proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
                             </div>
                             `)
                         $("#proofme-load-proof").remove()
@@ -370,7 +372,7 @@ $( document ).ready( () =>  {
                         $(".close").on("click", () => {
                             popupClosed = true
                         })
-                        console.log("popupClosed: ", popupClosed)
+                        logger("popupClosed: ", popupClosed)
                         if ($(".center").html() === "Your design is ready" && !popupClosed) {
                             $(".shareButtons").append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
@@ -396,11 +398,11 @@ $( document ).ready( () =>  {
                                                     <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                                                 </div>
                                                 <span id="loading-message">Exporting your design to ProofMe...</span>
-                                                <div class="beforeProgressBar" style="height: 10px;"> </div>
+                                                <div class="beforeProgressBar" style="height: 15px;"> </div>
                                                 <div id="myProgress">
                                                     <div id="myBar"></div>
                                                 </div>
-                                                <div class="beforeProgressBar" style="height: 15px;"> </div>
+                                                <div class="beforeProgressBar" style="height: 20px;"> </div>
 
                                                 <div style="">
                                                     <span id="PDFUrl"></span>
@@ -477,11 +479,11 @@ $( document ).ready( () =>  {
                                 <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                             </div>
                             <span id="loading-message">Exporting your design to ProofMe...</span>
-                            <div class="beforeProgressBar" style="height: 10px;"> </div>
+                            <div class="beforeProgressBar" style="height: 15px;"> </div>
                             <div id="myProgress">
                                 <div id="myBar"></div>
                             </div>
-                            <div class="beforeProgressBar" style="height: 15px;"> </div>
+                            <div class="beforeProgressBar" style="height: 20px;"> </div>
 
                             <div style="">
                                 <span id="PDFUrl"></span>
