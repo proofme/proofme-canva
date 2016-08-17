@@ -326,7 +326,8 @@ $( document ).ready( () =>  {
 
             tooptipCache = data
         } else if (event.data.reason === "getPDFUrl") {
-
+            const hasReviewer = !!event.data.reviewers.length
+            const proofExistsCache = proofExists
             proofId = proofId || event.data.proofId
             $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
 
@@ -340,18 +341,50 @@ $( document ).ready( () =>  {
                         $("#myProgress").remove()
                         $("#bottomMessage").text("Success!")
                         $("#bottomMessage").css({"color": "white"})
-                        $("#PDFUrl").html(`
+                        if (proofExistsCache) {
+                            var deadLine = event.data.due_date? "Set a New Deadline": "Set Deadline"
+                            if (hasReviewer) {
 
-                            <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+                                $("#PDFUrl").html(`
 
-                            <div style="padding: 10px;">
-                                <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
-                                <br />
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
-                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
-                            </div>
-                            `)
+                                    <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design <br/> <small style="color: #AAAAAA">We've notified your reviewers too!</small></span>
+
+                                    <div style="padding: 10px;">
+                                        <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
+                                        <br />
+                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
+                                    </div>
+                                    `)
+                            } else {
+                                $("#PDFUrl").html(`
+
+                                    <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design</span>
+
+                                    <div style="padding: 10px;">
+                                        <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
+                                        <br />
+                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
+                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
+                                    </div>
+                                    `)
+                            }
+
+                        } else {
+                            $("#PDFUrl").html(`
+
+                                <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+
+                                <div style="padding: 10px;">
+                                    <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
+                                    <br />
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
+                                </div>
+                                `)
+                        }
                         $("#proofme-load-proof").remove()
                     }, 10)
 
@@ -399,11 +432,11 @@ $( document ).ready( () =>  {
                                                     <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                                                 </div>
                                                 <span id="loading-message">Exporting your design to ProofMe...</span>
-                                                <div class="beforeProgressBar" style="height: 15px;"> </div>
+                                                <div class="beforeProgressBar" style="height: 18px;"> </div>
                                                 <div id="myProgress">
                                                     <div id="myBar"></div>
                                                 </div>
-                                                <div class="beforeProgressBar" style="height: 20px;"> </div>
+                                                <div class="beforeProgressBar" style="height: 23px;"> </div>
 
                                                 <div style="">
                                                     <span id="PDFUrl"></span>
@@ -429,12 +462,13 @@ $( document ).ready( () =>  {
                                 const PDFUrl = $(".intro a").attr('href')
                                 contentWindow.postMessage({
                                     reason: "getPDFUrl",
-                                    url: `https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                                    url: `https://${proofmeCluster}proofme.com/importFromCanva/${docId}/${b64EncodeUnicode(PDFUrl)}`,
+                                    fileUrl: b64EncodeUnicode(PDFUrl),
+                                    canvaID: docId
                                 }, '*');
 
                                 askProofMe()
                                 return
-                                // window.open(`https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode($(".intro a").attr('href'))}&canvaID=${docId}&ifRedirect=true`)
                             })
 
                         } else {
@@ -480,11 +514,11 @@ $( document ).ready( () =>  {
                                 <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                             </div>
                             <span id="loading-message">Exporting your design to ProofMe...</span>
-                            <div class="beforeProgressBar" style="height: 15px;"> </div>
+                            <div class="beforeProgressBar" style="height: 18px;"> </div>
                             <div id="myProgress">
                                 <div id="myBar"></div>
                             </div>
-                            <div class="beforeProgressBar" style="height: 20px;"> </div>
+                            <div class="beforeProgressBar" style="height: 23px;"> </div>
 
                             <div style="">
                                 <span id="PDFUrl"></span>
@@ -528,7 +562,9 @@ $( document ).ready( () =>  {
                         const PDFUrl = res.export.output.exportBlobs[0].url
                         contentWindow.postMessage({
                             reason: "getPDFUrl",
-                            url: `https://${proofmeCluster}proofme.com/importFromCanva?fileUrl=${b64EncodeUnicode(PDFUrl)}&canvaID=${docId}`
+                            url: `https://${proofmeCluster}proofme.com/importFromCanva/${docId}/${b64EncodeUnicode(PDFUrl)}`,
+                            fileUrl: b64EncodeUnicode(PDFUrl),
+                            canvaID: docId
                         }, '*');
 
                         askProofMe()

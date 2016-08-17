@@ -1,6 +1,6 @@
 # ProofMe-Canva
 A chrome extension that exports Canva designs to ProofMe
-##Requires ProofMe@`v0.1259.76-release+ `
+##Requires ProofMe@`v0.1259.88-release+ `
 
 <!--<img src="https://github.com/proofme/proofme-canva/blob/master/images/example.png?raw=true">-->
 ###Features
