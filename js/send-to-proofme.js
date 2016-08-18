@@ -1,6 +1,6 @@
 "use strict"
 
-const proofmeCluster = "local."  // "", "dev", "master", "preflight", "local"
+const proofmeCluster = ""  // "", "dev.", "master.", "preflight.", "local."
 const docId = window.location.href.split("design/")[1].split("/")[0]
 const proofmeiFrame = `https://${proofmeCluster}proofme.com/emptyCanva`;
 let proofExists = false
@@ -139,7 +139,9 @@ $( document ).ready( () =>  {
                         logger("fileSummary.users: ", fileSummary.users)
                         const userIds = fileSummary.users
                         const oneUserId = userIds[0]
-                        const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
+                        // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
+                        let oneUserImg = usersSummary[oneUserId].userPic
+                        if (!oneUserImg.includes("https://")) oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
                         const userNames = []
                         _.forEach(userIds, userId => {
                             userNames.push(usersSummary[userId].userName)
@@ -168,7 +170,8 @@ $( document ).ready( () =>  {
                             count++
                             if (count < 6) {
                                 userNames.push(usersSummary[user.id].userName)
-                                const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[user.id].userPic}`
+                                let oneUserImg = usersSummary[user.id].userPic
+                                if (!oneUserImg.includes("https://")) oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
                                 mixedImg += `<td><img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50"></td>`
                             } else {
                                 alert("@XMA: Reviewers number limit reached")
@@ -462,7 +465,7 @@ $( document ).ready( () =>  {
                                 const PDFUrl = $(".intro a").attr('href')
                                 contentWindow.postMessage({
                                     reason: "getPDFUrl",
-                                    url: `https://${proofmeCluster}proofme.com/importFromCanva/${docId}/${b64EncodeUnicode(PDFUrl)}`,
+                                    url: `https://${proofmeCluster}proofme.com/importFromCanva/ `,
                                     fileUrl: b64EncodeUnicode(PDFUrl),
                                     canvaID: docId
                                 }, '*');
@@ -562,7 +565,7 @@ $( document ).ready( () =>  {
                         const PDFUrl = res.export.output.exportBlobs[0].url
                         contentWindow.postMessage({
                             reason: "getPDFUrl",
-                            url: `https://${proofmeCluster}proofme.com/importFromCanva/${docId}/${b64EncodeUnicode(PDFUrl)}`,
+                            url: `https://${proofmeCluster}proofme.com/importFromCanva/ `,
                             fileUrl: b64EncodeUnicode(PDFUrl),
                             canvaID: docId
                         }, '*');

@@ -1,6 +1,6 @@
 # ProofMe-Canva
 A chrome extension that exports Canva designs to ProofMe
-##Requires ProofMe@`v0.1259.88-release+ `
+##Requires ProofMe@`v0.1259.96-release+ `
 
 <!--<img src="https://github.com/proofme/proofme-canva/blob/master/images/example.png?raw=true">-->
 ###Features
@@ -23,7 +23,4 @@ specs: https://proofme.com/p/6hnmackbc4rp8pg/Canva-Chrome-Plugin?files
 2. Go to chrome://extensions/
 3. Enable Developer Mode
 4. Click Load Unpacked Extension choose whereever you cloned this repo.
-5. The extension will talk to `local.proofme.com` by default right now.
- Feel free to go to  the beginning of `/js/send-to-proofme.js`
-  and change `const proofmeCluster = "local"`
-  to `""`/`"preflight"`/`"master"`/`"dev"`
+5. The extension will talk to production `proofme.com` by default right now.
