@@ -141,7 +141,10 @@ $( document ).ready( () =>  {
                         const oneUserId = userIds[0]
                         // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         let oneUserImg = usersSummary[oneUserId].userPic
-                        if (!oneUserImg.includes("https://")) oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                        console.log("oneUserImg: ", oneUserImg)
+                        if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                        }
                         const userNames = []
                         _.forEach(userIds, userId => {
                             userNames.push(usersSummary[userId].userName)
@@ -171,7 +174,9 @@ $( document ).ready( () =>  {
                             if (count < 6) {
                                 userNames.push(usersSummary[user.id].userName)
                                 let oneUserImg = usersSummary[user.id].userPic
-                                if (!oneUserImg.includes("https://")) oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                                if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                        oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                                }
                                 mixedImg += `<td><img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50"></td>`
                             } else {
                                 alert("@XMA: Reviewers number limit reached")
