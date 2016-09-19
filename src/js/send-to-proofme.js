@@ -1,7 +1,15 @@
 "use strict"
 
+const moment = require('moment');
+const _ = require('lodash');
+const $ = require('jquery');
+
+
+console.log("extension is loading")
 const proofmeCluster = ""  // "", "dev.", "master.", "preflight.", "local."
+console.log("window.location.href", window.location.href)
 const docId = window.location.href.split("design/")[1].split("/")[0]
+console.log("docId: ", docId)
 const proofmeiFrame = `https://${proofmeCluster}proofme.com/emptyCanva`;
 let proofExists = false
 let noOpenProofYet = true
@@ -12,6 +20,7 @@ let tooptipCache = {}
 let logger = () => {}
 if (window.location.href.includes("?logger=true")) logger = function() {console.log(arguments)} // don't log stuff on live
 
+console.log("before doc ready")
 
 $( document ).ready( () =>  {
 
@@ -25,7 +34,7 @@ $( document ).ready( () =>  {
 
     function whenUsernameTooLong(userNames) {
         const joinName = userNames.join(", ")
-        if (joinName.length > 25) return joinName.slice(0, 22) + "..."
+        if (joinName.length > 25) return joinName.slice(0, 22) + "...";
 
         return joinName
     }
@@ -303,6 +312,7 @@ $( document ).ready( () =>  {
         }
         if (event.data.reason === "windowOnLoad") {
             const data = event.data
+            console.log("windowOnLoad data: ", data)
             const filesSummary = data.annotsSummary.annots
             const usersSummary = data.annotsSummary.users
             const reviewsSummary = []

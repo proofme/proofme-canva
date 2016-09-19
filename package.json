@@ -1,0 +1,30 @@
+{
+  "name": "proofme-canva",
+  "version": "1.0.0",
+  "description": "When design ♥ feedback on a Chrome/Firefox/Safari extension ##Requires ProofMe@`v0.1259.96-release+ `",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/babel ./js -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/proofme/proofme-canva.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/proofme/proofme-canva/issues"
+  },
+  "homepage": "https://github.com/proofme/proofme-canva#readme",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babelify": "^7.3.0"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "lodash": "^4.15.0",
+    "moment": "^2.15.0"
+  }
+}

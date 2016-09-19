@@ -3,7 +3,9 @@
 
   "name": "ProofMe-Canva",
   "description": "A quick way to export your canva design into a proof.",
-  "version": "0.5",
+  "version": "0.0.1",
+
+  "update_url": "https://raw.githubusercontent.com/proofme/proofme-canva/master/updates.xml",
 
   "icons": {
       "16": "images/proofme-button-icon.png",
@@ -14,7 +16,7 @@
   "content_scripts": [
       {
           "matches": ["https://www.canva.com/*"],
-          "js": ["js/jquery-3.0.0.min.js", "js/moment-2.14.1.min.js", "js/send-to-proofme.js", "js/lodash-4.14.2.min.js"],
+          "js": ["js/send-to-proofme.js"],
           "css": ["css/index.css"]
       }
 
