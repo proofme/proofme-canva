@@ -79,13 +79,19 @@
 
 .proofme-details-popup {
     position: fixed;
-    width:400px;
+    width:400px !important;
     /*min-height: 100px;*/
     z-index:10000;
     background-color: #FFFFFF;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px !important;
+    opacity: none !important;
+    -webkit-animation: none !important;
+    animation: none !important;
+    box-shadow: 0 0 0 2px rgba(63,70,82,.15);
 }
+
+
 
 .hide-loader {
     display: none;
@@ -103,19 +109,36 @@
 
 .header {
     display: inline;
-    font-size: 16px;
+    font-size: 14px;
     padding: 5px;
 }
 
 .header::before{
+    content: ' ';
+    display: block;
     position: absolute;
-    content: "";
+    top: -9px;
+    left: 105px;
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 0 10px 20px 10px;
-    border-color: transparent transparent #ffffff transparent;
-    transform: translateX(173px) translateY(-20px);
+    border-width: 0 9px 9px;
+    border-color: transparent transparent white;
+    z-index: 2;
+}
+
+.header::after{
+    content: ' ';
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: -12px;
+    left: 104px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent rgba(63,70,82,.15);
+    border-width: 0 10px 10px;
 }
 
 .unread-count{

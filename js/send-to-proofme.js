@@ -78,7 +78,7 @@ $( document ).ready( () =>  {
         const openProofInnerHTML
             = `<li id="open-proof"><a class="button editorActionOpen prerollAnimation prerollDelay2.5" href="${urlToProof}" target="_blank"> Open Proof `
             + (unreadCount
-            ? `<img id="openup" alt="Unread Comment" width="22" height="22" style="transform: translateX(6px)translateY(3px);" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgaWQ9IkxheWVyXzEiCiAgIGRhdGEtbmFtZT0iTGF5ZXIgMSIKICAgd2lkdGg9IjMxIgogICBoZWlnaHQ9IjMxIgogICB2aWV3Qm94PSIwIDAgMzEgMzEiCiAgIHZlcnNpb249IjEuMSIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMC40OC41IHIxMDA0MCIKICAgc29kaXBvZGk6ZG9jbmFtZT0ibmV3LWFjdGl2aXR5LnN2ZyI+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRhMjMiPgogICAgPHJkZjpSREY+CiAgICAgIDxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj4KICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgICAgICA8ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+CiAgICAgIDwvY2M6V29yaz4KICAgIDwvcmRmOlJERj4KICA8L21ldGFkYXRhPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMyMSIgLz4KICA8c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIgogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IgogICAgIGJvcmRlcm9wYWNpdHk9IjEiCiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIKICAgICBncmlkdG9sZXJhbmNlPSIxMCIKICAgICBndWlkZXRvbGVyYW5jZT0iMTAiCiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjY0MCIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI0ODAiCiAgICAgaWQ9Im5hbWVkdmlldzE5IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSI3LjYxMjkwMzIiCiAgICAgaW5rc2NhcGU6Y3g9IjE1LjUiCiAgICAgaW5rc2NhcGU6Y3k9IjE1LjUiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIiAvPgogIDx0aXRsZQogICAgIGlkPSJ0aXRsZTMiPnByb29mZXItaWNvbnM8L3RpdGxlPgogIDxnCiAgICAgaWQ9Imc1IgogICAgIHRyYW5zZm9ybT0ibWF0cml4KDEuMzM1OTExOSwwLDAsMS4zMDA0MzAxLC01LjI4NDMyNTUsLTQuODc5NjE5NSkiPgogICAgPGcKICAgICAgIGlkPSJnNyIKICAgICAgIHN0eWxlPSJvcGFjaXR5OjAuNCI+CiAgICAgIDxwYXRoCiAgICAgICAgIGQ9Ik0gNi41LDIxLjggQSAxMSwxMSAwIDEgMSAxMCwyNSBsIC00LjUsMS44MSB6IgogICAgICAgICBpZD0icGF0aDkiCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+CiAgICAgIDxwYXRoCiAgICAgICAgIGQ9Ik0gMTUuNSw1IEEgMTAuNSwxMC41IDAgMSAxIDEwLDI0LjQ1IEwgNi4xNywyNiA3LDIxLjY5IEEgMTAuNDksMTAuNDkgMCAwIDEgMTUuNSw1IG0gMCwtMSBBIDExLjUxLDExLjUxIDAgMCAwIDQsMTUuNSAxMS4zOSwxMS4zOSAwIDAgMCA2LDIxLjkxIEwgNS4xOSwyNS44IDQuODIsMjcuNjEgNi41MywyNi45MiAxMCwyNS41NiBBIDExLjUsMTEuNSAwIDEgMCAxNS41LDQgaCAwIHoiCiAgICAgICAgIGlkPSJwYXRoMTEiCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiCiAgICAgICAgIHN0eWxlPSJmaWxsOiMxOTE5MTkiIC8+CiAgICA8L2c+CiAgICA8cmVjdAogICAgICAgeD0iNSIKICAgICAgIHk9IjUiCiAgICAgICB3aWR0aD0iMjEiCiAgICAgICBoZWlnaHQ9IjIxIgogICAgICAgcng9IjEwLjUiCiAgICAgICByeT0iMTAuNSIKICAgICAgIGlkPSJyZWN0MTMiCiAgICAgICBzdHlsZT0iZmlsbDojMDBiNGZmIiAvPgogICAgPHBvbHlnb24KICAgICAgIHBvaW50cz0iMTIsMjMuNjcgNy4zMywyMC4xNyA3LjMzLDIwLjE3IDYuMTcsMjYgIgogICAgICAgaWQ9InBvbHlnb24xNSIKICAgICAgIHN0eWxlPSJmaWxsOiMwMGI0ZmYiIC8+CiAgICA8Y2lyY2xlCiAgICAgICBjeD0iMTUuNSIKICAgICAgIGN5PSIxNS4zNyIKICAgICAgIHI9IjIuOTIwMDAwMSIKICAgICAgIGlkPSJjaXJjbGUxNyIKICAgICAgIGQ9Im0gMTguNDIsMTUuMzcgYyAwLDEuNjEyNjcxIC0xLjMwNzMyOCwyLjkyIC0yLjkyLDIuOTIgLTEuNjEyNjcyLDAgLTIuOTIsLTEuMzA3MzI5IC0yLjkyLC0yLjkyIDAsLTEuNjEyNjcyIDEuMzA3MzI4LC0yLjkyIDIuOTIsLTIuOTIgMS42MTI2NzIsMCAyLjkyLDEuMzA3MzI4IDIuOTIsMi45MiB6IgogICAgICAgc29kaXBvZGk6Y3g9IjE1LjUiCiAgICAgICBzb2RpcG9kaTpjeT0iMTUuMzciCiAgICAgICBzb2RpcG9kaTpyeD0iMi45MjAwMDAxIgogICAgICAgc29kaXBvZGk6cnk9IjIuOTIwMDAwMSIKICAgICAgIHN0eWxlPSJmaWxsOiNmZmZmZmYiIC8+CiAgPC9nPgo8L3N2Zz4K">`
+            ? `<img id="openup" alt="Unread Comment" width="22" height="22" style="transform: translateX(6px)translateY(3px);" src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/notify-icon.png">`
             : `<span id="openup" class="${classForCount}">${countToUse}</span>`)
             + `</a></li>`
 
@@ -107,7 +107,7 @@ $( document ).ready( () =>  {
                 const buttonOffset = $("#openup").offset()
                 logger(`$("#openup").offset(): `, $("#openup").offset())
 
-                const popup = $(`<div class="proofme-details-popup" style="transform: translateX(${buttonOffset.left - 185}px) translateY(55px)"></div>`)
+                const popup = $(`<div class="proofme-details-popup" style="transform: translateX(${buttonOffset.left - 100}px) translateY(55px) !important"></div>`)
                 unreadCount
                     ? popup.append(`
                         <div class="header">
@@ -465,6 +465,11 @@ $( document ).ready( () =>  {
                                     progressDialog.remove()
                                 })
 
+                                $(document).keyup(e => {
+                                    progressDialog.remove()
+                                    $(".modalContent").remove()
+                                })
+
                                 increaseBar(10, 1)
 
                                 const PDFUrl = $(".intro a").attr('href')
@@ -543,6 +548,11 @@ $( document ).ready( () =>  {
             $('body').append(progressDialog)
 
             $(".closePopup").on("click", function() {
+                progressDialog.remove()
+                $(".modalContent").remove()
+            })
+
+            $(document).keyup(e => {
                 progressDialog.remove()
                 $(".modalContent").remove()
             })
