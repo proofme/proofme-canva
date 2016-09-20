@@ -1,7 +1,9 @@
 "use strict"
 
 const proofmeCluster = ""  // "", "dev.", "master.", "preflight.", "local."
-const docId = window.location.href.split("design/")[1].split("/")[0]
+const urlObject = window.location.href.split("design/")[1].split("/")
+const docId = urlObject[0]
+const secret = urlObject[1]
 const proofmeiFrame = `https://${proofmeCluster}proofme.com/emptyCanva`;
 let proofExists = false
 let noOpenProofYet = true
@@ -477,7 +479,8 @@ $( document ).ready( () =>  {
                                     reason: "getPDFUrl",
                                     url: `https://${proofmeCluster}proofme.com/importFromCanva/ `,
                                     fileUrl: b64EncodeUnicode(PDFUrl),
-                                    canvaID: docId
+                                    canvaID: docId,
+                                    secret: secret
                                 }, '*');
 
                                 askProofMe()
@@ -582,7 +585,8 @@ $( document ).ready( () =>  {
                             reason: "getPDFUrl",
                             url: `https://${proofmeCluster}proofme.com/importFromCanva/ `,
                             fileUrl: b64EncodeUnicode(PDFUrl),
-                            canvaID: docId
+                            canvaID: docId,
+                            secret: secret
                         }, '*');
 
                         askProofMe()
