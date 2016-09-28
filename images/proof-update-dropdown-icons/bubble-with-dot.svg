@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+  <title>bubble-with-dot</title>
+  <g>
+    <path d="M10.5,0A10.49,10.49,0,0,0,2,16.69L1.17,21,5,19.45A10.5,10.5,0,1,0,10.5,0Z" fill="#fff"/>
+    <circle cx="10.5" cy="10.5" r="3" fill="#00b4ff"/>
+  </g>
+</svg>
