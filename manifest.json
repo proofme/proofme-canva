@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
 
-  "name": "ProofMe-Canva",
-  "description": "A quick way to export your canva design into a proof.",
+  "name": "ProofMe for Canva",
+  "description": "Create proofs from your designs without leaving Canva. Add the power of visual review to the world’s easiest design app.",
   "version": "0.0.1",
 
   "icons": {
-      "16": "images/proofme-button-icon.png",
-      "48": "images/proofme-button-icon.png",
-      "128": "images/proofme-button-icon.png"
+      "16": "images/proofme-icon-chrome-store-16.png",
+      "48": "images/proofme-icon-chrome-store-48.png",
+      "128": "images/proofme-icon-chrome-store-128.png"
   },
 
   "content_scripts": [
@@ -21,8 +21,8 @@
   ],
 
   "browser_action": {
-    "default_icon": "images/proofme-button-icon.png",
-    "default_title": "ProofMe-Canva Beta"
+    "default_icon": "images/proofme-icon-chrome-store-48.png",
+    "default_title": "ProofMe for Canva Beta"
   },
 
   "permissions": [
