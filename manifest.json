@@ -3,7 +3,7 @@
 
   "name": "ProofMe-Canva",
   "description": "A quick way to export your canva design into a proof.",
-  "version": "0.5",
+  "version": "0.0.1",
 
   "icons": {
       "16": "images/proofme-button-icon.png",

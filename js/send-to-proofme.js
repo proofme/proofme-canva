@@ -60,7 +60,7 @@ $( document ).ready( () =>  {
         logger("===: ", filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl)
         $('.buttonProofMe').html(`
             <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-version%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
-            Update in ProofMe
+            Update Proof
         `)
 
         // if (!noOpenProofYet) $("#open-proof").remove()
@@ -80,7 +80,7 @@ $( document ).ready( () =>  {
         const openProofInnerHTML
             = `<li id="open-proof"><a class="button editorActionOpen prerollAnimation prerollDelay2.5" href="${urlToProof}" target="_blank"> Open Proof `
             + (unreadCount
-            ? `<img id="openup" alt="Unread Comment" width="22" height="22" style="transform: translateX(6px)translateY(3px);" src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/notify-icon.png">`
+            ? `<img id="openup" alt="Unread Comment" width="22" height="22" style="transform: translateX(6px)translateY(3px);" src=${imageCollection.bubbleWithDot}>`
             : `<span id="openup" class="${classForCount}">${countToUse}</span>`)
             + `</a></li>`
 
@@ -113,7 +113,7 @@ $( document ).ready( () =>  {
                 unreadCount
                     ? popup.append(`
                         <div class="header">
-                            <span>Unread Comments</span>
+                            <span style="color: #3f4652;">Unread Comments</span>
                             <span style="float: right"><span class="markAsRead" style="color: #00c4cc; cursor:pointer;">Mark as read</span> <img class="hide-loader" src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/loader.gif">• <span style="color: #00c4cc; cursor:pointer; padding-right: 10px;" onclick="window.open('${urlToProof}');">View All</span></span>
                         </div><hr class="magicHr" />
                     `)
@@ -143,7 +143,6 @@ $( document ).ready( () =>  {
                         const oneUserId = userIds[0]
                         // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         let oneUserImg = usersSummary[oneUserId].userPic
-                        console.log("oneUserImg: ", oneUserImg)
                         if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
                                 oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
                         }
@@ -159,7 +158,7 @@ $( document ).ready( () =>  {
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children">
                                 <img src="${oneUserImg}" width=52 height=50></img>
-                                <div><span>${shortedName} </span>  <span>${fileSummary.status === '1'? '👍': '👎'}  </span> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
+                                <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
                                 <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
                         `)
@@ -206,7 +205,14 @@ $( document ).ready( () =>  {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div><span>${shortedName} • ${time} <br /><span class="${classForCount}">${countToUse}</span><i  style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlToProof}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name } ${ " >"}</i></span></div>
+                                <div>
+                                    <span>${shortedName} • ${time} <br />
+                                        <span class="${classForCount}">${countToUse}</span>
+                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlToProof}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name }
+                                            <img class="blue-arrow" src=${imageCollection.blueArrow} height="11">
+                                        </i>
+                                    </span>
+                                </div>
                                 <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
 
@@ -235,6 +241,34 @@ $( document ).ready( () =>  {
                 $('.proofme-details-popup').fadeIn(500 , () =>  {
                     return false
                 })
+                console.log("$('.filename-and-arrow'): ", $('.filename-and-arrow'))
+
+                let translateX = 0
+                let arrowOnHover = false
+                $('.filename-and-arrow').hover(
+                    () => {
+                        arrowOnHover = true
+                        moveLeft()
+                        function moveLeft () {
+                            setTimeout( () => {
+                                $('.blue-arrow').css({transform: `translateX(${translateX}px)`})
+                                translateX += 0.1
+                                if (translateX < 5 && arrowOnHover) moveLeft()
+                            }, 1)
+                        }
+                    },
+                    () => {
+                        arrowOnHover = false
+                        moveRight()
+                        function moveRight () {
+                            setTimeout( () => {
+                                $('.blue-arrow').css({transform: `translateX(${translateX}px)`})
+                                translateX -= 0.1
+                                if (translateX > 0 && !arrowOnHover) moveRight()
+                            }, 1)
+                        }
+                    }
+                )
                 $(".markAsRead").click( () => {
                         $(".markAsRead").hide()
                         $(".hide-loader").css("display", "inline")
@@ -421,7 +455,7 @@ $( document ).ready( () =>  {
                             $(".shareButtons").append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
                                 <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
-                                ${proofExists?"Update in ProofMe" : "Send to ProofMe"}
+                                ${proofExists?"Update Proof" : "Make a Proof"}
                                 </button>
                             `)
 
@@ -510,7 +544,7 @@ $( document ).ready( () =>  {
         $(".shareButtons").append(`
             <button class="button buttonProofMe buttonExport" title="Share on ProofMe">
             <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
-            ${proofExists?"Update in ProofMe" : "Send to ProofMe"}
+            ${proofExists?"Update Proof" : "Make a Proof"}
             </button>
         `)
 
@@ -649,3 +683,13 @@ $( document ).ready( () =>  {
 
 
 })
+
+
+const imageCollection = {
+    approveThumbGreen: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/approve-thumb-green%402x.png",
+    approveThumbWhite: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/approve-thumb-white%402x.png",
+    rejectThumbRed: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-red%402x.png",
+    rejectThumbWhite: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-white%402x.png",
+    bubbleWithDot: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/bubble-with-dot%402x.png",
+    blueArrow: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/Asset%205%402x.png"
+}
