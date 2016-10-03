@@ -2,7 +2,7 @@
 A chrome extension that exports Canva designs to ProofMe
 ##Requires ProofMe@`v0.1259.96-release+ `
 
-<!--<img src="https://github.com/proofme/proofme-canva/blob/master/images/example.png?raw=true">-->
+<img src="https://lh3.googleusercontent.com/LrEVVCoEHrjNL5DV06xxT_V5QuqObcwiluQJTNjNhcqoaON_1nICCv0j7dsgHX8RaooGVjZEvg=s1280-h800-e365-rw">
 ###Features
 Add two buttons to canva's "Share" and "Download" menu.
 
