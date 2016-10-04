@@ -159,6 +159,19 @@
     background-size: contain;
 }
 
+#openup {
+    margin-left: 2px;
+}
+
+.read-count-on-button{
+    color: #00c4cc;
+    padding-left: 5px;
+    padding-right: 6px;
+    background-image: url("https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/bubble-white%402x.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 .two-digits-count{
     background-size: 27px 19px !important;
 }

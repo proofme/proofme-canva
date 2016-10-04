@@ -71,7 +71,7 @@ $( document ).ready( () =>  {
             classForCount += "unread-count"
             countToUse = unreadCount
         } else {
-            classForCount += "read-count"
+            classForCount += "read-count-on-button"
             countToUse = totalCount
         }
 
@@ -379,7 +379,7 @@ $( document ).ready( () =>  {
             iframeII.onload = function(){
                     $("#myBar").css({"width": `100%`})
                     setTimeout( () => {
-                        $(".bottomPart").css({"background": "#6ACD00"})
+                        $(".bottomPart").css({"background": "#6aC000"})
                         $("#loading-message").remove()
                         $(".beforeProgressBar").remove()
                         $("#myProgress").remove()
@@ -487,7 +487,7 @@ $( document ).ready( () =>  {
                                                 </div>
                                             </div>
                                             <div class="bottomPart">
-                                                <span id="bottomMessage">It's not great until you iterate!</span>
+                                                <span id="bottomMessage">${getARandomMessage()}!</span>
                                             </div>
                                         </div>
                                     </div>
@@ -575,7 +575,7 @@ $( document ).ready( () =>  {
                             </div>
                         </div>
                         <div class="bottomPart">
-                            <span id="bottomMessage">It's not great until you iterate!</span>
+                            <span id="bottomMessage">${getARandomMessage()}!</span>
                         </div>
                     </div>
                 </div>
@@ -585,6 +585,7 @@ $( document ).ready( () =>  {
             $('body').append(progressDialog)
 
             $(".closePopup").on("click", function() {
+                document.getElementsByTagName("body")[0].setAttribute("data-modal-levels", "0")
                 progressDialog.remove()
                 $(".modalContent").remove()
             })
@@ -684,6 +685,29 @@ $( document ).ready( () =>  {
 
 })
 
+
+function getARandomMessage () {
+    const popupMessages = [
+        "Your next great idea starts here",
+        "It's not great until you iterate",
+        "Love your feedback",
+        "The best thing you can do is get started",
+        "Every idea starts out as an ugly baby",
+        "Creativity is nourished by conflict",
+        "A perfect day for a new proof",
+        "Use the feedback, Luke",
+        "The hardest part is the first step",
+        "Proofing makes perfect",
+        "Two heads are better than one",
+        "If you don't ask, you'll never know",
+        "Feedback moves you forward",
+        "It's never too early...",
+        "Never brainstorm with a blank slate",
+        "Make, make, make"
+    ]
+
+    return popupMessages[Math.floor(popupMessages.length * Math.random())]
+}
 
 const imageCollection = {
     approveThumbGreen: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/approve-thumb-green%402x.png",
