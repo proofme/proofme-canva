@@ -3,7 +3,7 @@
 
   "name": "ProofMe for Canva",
   "description": "Create proofs from your designs without leaving Canva. Add the power of visual review to the world’s easiest design app.",
-  "version": "0.0.2",
+  "version": "0.0.3",
 
   "icons": {
       "16": "images/proofme-icon-chrome-store-16.png",
@@ -19,11 +19,6 @@
       }
 
   ],
-
-  "browser_action": {
-    "default_icon": "images/proofme-icon-chrome-store-48.png",
-    "default_title": "ProofMe for Canva Beta"
-  },
 
   "permissions": [
     "https://www.canva.com/*"
