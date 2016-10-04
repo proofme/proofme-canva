@@ -241,30 +241,32 @@ $( document ).ready( () =>  {
                 $('.proofme-details-popup').fadeIn(500 , () =>  {
                     return false
                 })
-                console.log("$('.filename-and-arrow'): ", $('.filename-and-arrow'))
+
 
                 let translateX = 0
-                let arrowOnHover = false
+                let arrowOnHover = {}
                 $('.filename-and-arrow').hover(
-                    () => {
-                        arrowOnHover = true
+                    (e) => {
+                        const currentArrow = $(e.target).find('.blue-arrow')
+                        arrowOnHover.currentArrow = true
                         moveLeft()
                         function moveLeft () {
                             setTimeout( () => {
-                                $('.blue-arrow').css({transform: `translateX(${translateX}px)`})
+                                currentArrow.css({transform: `translateX(${translateX}px)`})
                                 translateX += 0.1
-                                if (translateX < 5 && arrowOnHover) moveLeft()
+                                if (translateX < 5 && arrowOnHover.currentArrow) moveLeft()
                             }, 1)
                         }
                     },
-                    () => {
-                        arrowOnHover = false
+                    (e) => {
+                        const currentArrow = $(e.target).find('.blue-arrow')
+                        arrowOnHover.currentArrow = false
                         moveRight()
                         function moveRight () {
                             setTimeout( () => {
-                                $('.blue-arrow').css({transform: `translateX(${translateX}px)`})
+                                currentArrow.css({transform: `translateX(${translateX}px)`})
                                 translateX -= 0.1
-                                if (translateX > 0 && !arrowOnHover) moveRight()
+                                if (translateX > 0 && !arrowOnHover.currentArrow) moveRight()
                             }, 1)
                         }
                     }
