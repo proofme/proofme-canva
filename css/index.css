@@ -26,17 +26,6 @@
     padding: 10px 8px 0px 8px;
 }
 
-.converting-loader {
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    overflow:hidden;
-    flex-direction: column;
-    &.shown{
-        display: flex;
-    }
-}
-
 .closePopup {
     font-size: 9px;
     opacity: 0.6;
