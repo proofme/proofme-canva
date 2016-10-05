@@ -446,7 +446,12 @@ $( document ).ready( () =>  {
                         logger("popupClosed: ", popupClosed)
                         if ($(".center").html() === "Your design is ready" && !popupClosed) {
                             $(".buttonRedirect").remove()
-                            $(".shareButtons").append(`
+                            let buttonsDom = []
+                            const shareButtons = $(".shareButtons")
+                            if (shareButtons.length) buttonsDom = shareButtons
+                            const shareDialog__socialButtons= $(".shareDialog__socialButtons")
+                            if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
+                            buttonsDom.append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
                                 <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
                                 ${proofExists?"Update Proof" : "Make a Proof"}
