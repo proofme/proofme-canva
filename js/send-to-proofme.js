@@ -450,6 +450,8 @@ $( document ).ready( () =>  {
                             const shareButtons = $(".shareButtons")
                             if (shareButtons.length) buttonsDom = shareButtons
                             const shareDialog__socialButtons= $(".shareDialog__socialButtons")
+                            logger("shareButtons: ", shareButtons)
+                            logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
                             if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
                             buttonsDom.append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
@@ -540,7 +542,15 @@ $( document ).ready( () =>  {
 
 
     $(".editorActionShare").on("click", function() {
-        $(".shareButtons").append(`
+        let buttonsDom = []
+        const shareButtons = $(".shareButtons")
+        if (shareButtons.length) buttonsDom = shareButtons
+        const shareDialog__socialButtons= $(".shareDialog__socialButtons")
+        console.log("shareDialog__socialButtons: ", shareDialog__socialButtons)
+        if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
+        logger("shareButtons: ", shareButtons)
+        logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
+        buttonsDom.append(`
             <button class="button buttonProofMe buttonExport" title="Share on ProofMe">
             <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
             ${proofExists?"Update Proof" : "Make a Proof"}
