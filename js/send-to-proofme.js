@@ -375,68 +375,60 @@ $( document ).ready( () =>  {
             const hasReviewer = !!event.data.reviewers.length
             const proofExistsCache = proofExists
             proofId = proofId || event.data.proofId
-            $(".editorActionShare").append(`<iframe id="proofme-load-proof" src=https://${proofmeCluster}proofme.com${event.data.PDFUrl} width="0" height="0" style="display: none;">`)
+                $("#myBar").css({"width": `100%`})
+                setTimeout( () => {
+                    $(".bottomPart").css({"background": "#6aC000"})
+                    $("#loading-message").remove()
+                    $(".beforeProgressBar").remove()
+                    $("#myProgress").remove()
+                    $("#bottomMessage").text("Success!")
+                    $("#bottomMessage").css({"color": "white"})
+                    if (proofExistsCache) {
+                        var deadLine = event.data.due_date? "Set a New Deadline": "Set Deadline"
+                        if (hasReviewer) {
 
-            const iframeII = document.getElementById('proofme-load-proof');
-            iframeII.onload = function(){
-                    $("#myBar").css({"width": `100%`})
-                    setTimeout( () => {
-                        $(".bottomPart").css({"background": "#6aC000"})
-                        $("#loading-message").remove()
-                        $(".beforeProgressBar").remove()
-                        $("#myProgress").remove()
-                        $("#bottomMessage").text("Success!")
-                        $("#bottomMessage").css({"color": "white"})
-                        if (proofExistsCache) {
-                            var deadLine = event.data.due_date? "Set a New Deadline": "Set Deadline"
-                            if (hasReviewer) {
+                            $("#PDFUrl").html(`
 
-                                $("#PDFUrl").html(`
+                                <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design <br/> <small style="color: #AAAAAA">We've notified your reviewers too!</small></span>
 
-                                    <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design <br/> <small style="color: #AAAAAA">We've notified your reviewers too!</small></span>
-
-                                    <div style="padding: 10px;">
-                                        <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
-                                        <br />
-                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
-                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
-                                    </div>
-                                    `)
-                            } else {
-                                $("#PDFUrl").html(`
-
-                                    <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design</span>
-
-                                    <div style="padding: 10px;">
-                                        <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
-                                        <br />
-                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
-                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
-                                        <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
-                                    </div>
-                                    `)
-                            }
-
+                                <div style="padding: 10px;">
+                                    <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
+                                    <br />
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
+                                </div>
+                                `)
                         } else {
                             $("#PDFUrl").html(`
 
-                                <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
+                                <span style="font-size: 18px;font-weight: 100;">Your proof has been updated with the latest design</span>
 
                                 <div style="padding: 10px;">
                                     <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
                                     <br />
                                     <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
                                     <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
-                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
+                                    <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">${deadLine}</a>
                                 </div>
                                 `)
                         }
-                        $("#proofme-load-proof").remove()
-                    }, 10)
 
+                    } else {
+                        $("#PDFUrl").html(`
 
+                            <span style="font-size: 18px;font-weight: 100;">Hooray! Here's a link to your proof:</span>
 
-            }
+                            <div style="padding: 10px;">
+                                <a style="color: #04BCFF;" href='https://${proofmeCluster}proofme.com${event.data.PDFUrl}' target="_blank">https://${proofmeCluster}proofme.com${event.data.PDFUrl}</a>
+                                <br />
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com${event.data.PDFUrl}" target="_blank">Open Proof</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvareviewers" target="_blank">Add Reviewers</a>
+                                <a class="button editorActionOpen prerollAnimation buttonEditPanel" href="https://${proofmeCluster}proofme.com/dashboard/my#${proofId}canvadue" target="_blank">Set Deadline</a>
+                            </div>
+                            `)
+                    }
+                    $("#proofme-load-proof").remove()
+                }, 10)
         }
 
 
@@ -658,8 +650,12 @@ $( document ).ready( () =>  {
                 });
 
                 request.fail( err => {
-                    const docVersion = JSON.parse(err.responseText.split("</x>//")[1]).version
-                    exportPDF (token, docId, pages, docVersion)
+                    try {
+                        const docVersion = JSON.parse(err.responseText.split("</x>//")[1]).version
+                        exportPDF (token, docId, pages, docVersion)
+                    } catch (ex) {
+                        exportPDF(token, docId, pages, 1)
+                    }
                 })
             }
 
