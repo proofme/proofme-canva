@@ -1,6 +1,7 @@
 .buttonProofMe {
-    padding-left: 5px !important;
-    background: #6ACD00 !important;
+    padding-left: 10px !important;
+    margin-left: -3px !important;
+    background: #6ac000 !important;
 }
 
 .buttonEditPanel {

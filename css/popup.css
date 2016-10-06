@@ -1,0 +1,67 @@
+body {
+    height: 150px;
+    width: 358px;
+    /*border-radius: 9px;*/
+    box-shadow: 9px 9px 9px rgba(0,0,0,0.3);
+}
+
+#empty-proofme {
+    opacity: 0.01;
+    display: block;
+}
+
+.btn-app-name {
+    height: 60px;
+    width: 350px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.text {
+    color: white;
+    font-size: 16px;
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+}
+
+.btn-proofme {
+    background-color: #6AC000;
+    background-image: url("../images/browser-icon-action/dropdown-proofme.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.text-proofme {
+    transform: translateX(150px) translateY(20px);
+}
+
+.btn-canva {
+    background-color: #02C4CC;
+    background-image: url("../images/browser-icon-action/dropdown-canva.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.text-canva {
+    transform: translateX(150px) translateY(20px);
+}
+
+.footer {
+    height: 20px;
+    width: 350px;
+    color: #00b4ff;
+    font-size: 12px;
+    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+}
+
+#footer-left {
+    margin-left: 10px;
+    float: left;
+    cursor: pointer;
+}
+
+#footer-right {
+    margin-right: 10px;
+    float: right;
+    cursor: pointer;
+}
