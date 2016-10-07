@@ -143,7 +143,9 @@ $( document ).ready( () =>  {
                         const oneUserId = userIds[0]
                         // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         let oneUserImg = usersSummary[oneUserId].userPic
-                        if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                        if (!oneUserImg) {
+                            oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                        } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
                                 oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
                         }
                         const userNames = []
@@ -175,7 +177,9 @@ $( document ).ready( () =>  {
                             if (count < 6) {
                                 userNames.push(usersSummary[user.id].userName)
                                 let oneUserImg = usersSummary[user.id].userPic
-                                if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                if (!oneUserImg) {
+                                    oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                                } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
                                         oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
                                 }
                                 mixedImg += `<td><img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50"></td>`
@@ -216,6 +220,26 @@ $( document ).ready( () =>  {
                                 <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
 
+                        `)
+                    } else if (fileSummary.comment_type === "ManagerNote") {
+                        const owner = fileSummary.owner || fileSummary.proof_owner
+                        const userNames = [usersSummary[owner].userName]
+                        const shortedName = whenUsernameTooLong(userNames)
+                        let fileContent = ""
+                        if (fileSummary.contents) {
+                            fileContent = `${ fileSummary.contents.length > 7 ? (fileSummary.contents.slice(0, 7) + "...") : fileSummary.contents}`
+                        }
+                        let oneUserImg = usersSummary[owner].userPic
+                        if (!oneUserImg) {
+                            oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                        } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                        }
+                        listitem = $(`
+                            <div class="annotation-item clearfix float-my-children">
+                                <img src="${oneUserImg}" width=52 height=50></img>
+                                <div><span>${shortedName} </span> • <span> ${time}<br /> ${ fileContent} </span></div>
+                            </div>
                         `)
                     } else {
                         alert(`@XMA: New summary type: ${fileSummary}`)
@@ -503,8 +527,10 @@ $( document ).ready( () =>  {
                                 })
 
                                 $(document).keyup(e => {
-                                    progressDialog.remove()
-                                    $(".modalContent").remove()
+                                    if (e.which == 27) {
+                                        progressDialog.remove()
+                                        $(".modalContent").remove()
+                                    }
                                 })
 
                                 increaseBar(10, 1)
@@ -546,7 +572,6 @@ $( document ).ready( () =>  {
         const shareButtons = $(".shareButtons")
         if (shareButtons.length) buttonsDom = shareButtons
         const shareDialog__socialButtons= $(".shareDialog__socialButtons")
-        console.log("shareDialog__socialButtons: ", shareDialog__socialButtons)
         if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
         logger("shareButtons: ", shareButtons)
         logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
@@ -600,8 +625,10 @@ $( document ).ready( () =>  {
             })
 
             $(document).keyup(e => {
-                progressDialog.remove()
-                $(".modalContent").remove()
+                if (e.which == 27) {
+                    progressDialog.remove()
+                    $(".modalContent").remove()
+                }
             })
 
             increaseBar(10, 1)
