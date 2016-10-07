@@ -41,11 +41,11 @@ window.onload = () => {
         window.open(`https://${proofmeCluster}proofme.com/integrations/canva`)
     })
 
-    document.getElementsByClassName("text-proofme")[0].addEventListener("click", () => {
+    document.getElementsByClassName("btn-proofme")[0].addEventListener("click", () => {
         window.open(`https://${proofmeCluster}proofme.com/dashboard/my`)
     })
 
-    document.getElementsByClassName("text-canva")[0].addEventListener("click", () => {
+    document.getElementsByClassName("btn-canva")[0].addEventListener("click", () => {
         window.open("https://canva.com")
     })
 }

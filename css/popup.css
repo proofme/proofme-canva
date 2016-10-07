@@ -1,7 +1,6 @@
 body {
     height: 150px;
-    width: 358px;
-    /*border-radius: 9px;*/
+    width: 353px;
     box-shadow: 9px 9px 9px rgba(0,0,0,0.3);
 }
 
@@ -12,16 +11,18 @@ body {
 
 .btn-app-name {
     height: 60px;
-    width: 350px;
-    margin: 5px;
-    border-radius: 5px;
+    width: 345px;
+    margin: 0px 0px 6px 5px;
+    border-radius: 2px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .text {
     color: white;
-    font-size: 16px;
-    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    font-size: 18px;
+    font-family: ProximaNova-Regular;
+    transform: translateX(150px) translateY(20px);
 }
 
 .btn-proofme {
@@ -31,8 +32,16 @@ body {
     background-size: contain;
 }
 
+.btn-proofme:hover, .btn-proofme:focus {
+    background-color: #61b800;
+}
+
+.btn-canva:hover, .btn-canva:focus {
+    background-color: #01a7ad;
+}
+
 .text-proofme {
-    transform: translateX(150px) translateY(20px);
+
 }
 
 .btn-canva {
@@ -43,25 +52,44 @@ body {
 }
 
 .text-canva {
-    transform: translateX(150px) translateY(20px);
+
 }
 
 .footer {
     height: 20px;
     width: 350px;
     color: #00b4ff;
-    font-size: 12px;
-    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+    font-size: 14px;
+    font-family: ProximaNova-Semibold;
+    margin: 5px;
 }
 
 #footer-left {
+    color: #00b4ff;
     margin-left: 10px;
     float: left;
     cursor: pointer;
 }
 
 #footer-right {
+    color: #00b4ff;
     margin-right: 10px;
     float: right;
     cursor: pointer;
+}
+
+.icon {
+    display: inline-block;
+    height: 11px;
+    width: 10px;
+}
+
+.icon-info {
+    display: block;
+    width: 15px;
+    height: 12px;
+    background-position: right;
+    background-image: url("../images/browser-icon-action/dropdown-info.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
 }
