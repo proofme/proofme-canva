@@ -1,5 +1,6 @@
 "use strict"
 
+const proofmeBuild = "0.1259.257"
 const proofmeCluster = ""  // "", "dev.", "master.", "preflight.", "local."
 const urlObject = window.location.href.split("design/")[1].split("/")
 const docId = urlObject[0]
@@ -27,7 +28,7 @@ $( document ).ready( () =>  {
 
     function whenUsernameTooLong(userNames) {
         const joinName = userNames.join(", ")
-        if (joinName.length > 25) return joinName.slice(0, 22) + "..."
+        if (joinName.length > 23) return joinName.slice(0, 20) + "..."
 
         return joinName
     }
@@ -143,14 +144,19 @@ $( document ).ready( () =>  {
                         const oneUserId = userIds[0]
                         // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         let oneUserImg = usersSummary[oneUserId].userPic
+                        let acronymAvatar = false
                         if (!oneUserImg) {
-                            oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                            acronymAvatar = true
+                            oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
                         } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
-                                oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                                oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
                         }
                         const userNames = []
+                        let acronym = ""
                         _.forEach(userIds, userId => {
-                            userNames.push(usersSummary[userId].userName)
+                            const user = usersSummary[userId]
+                            userNames.push(user.userName)
+                            acronym = user.acronym
                         })
                         const shortedName = whenUsernameTooLong(userNames)
                         let fileContent = ""
@@ -160,6 +166,7 @@ $( document ).ready( () =>  {
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children">
                                 <img src="${oneUserImg}" width=52 height=50></img>
+                                ${acronymAvatar ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
                                 <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
                                 <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
@@ -173,16 +180,25 @@ $( document ).ready( () =>  {
                         let count = 0
                         const userNames = []
                         _.forEach(users, user => {
+                            console.log("users: ", users)
                             count++
+                            let acronym = ""
                             if (count < 6) {
                                 userNames.push(usersSummary[user.id].userName)
                                 let oneUserImg = usersSummary[user.id].userPic
                                 if (!oneUserImg) {
-                                    oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                                    if (users.length === 1) acronym = usersSummary[user.id].acronym
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
                                 } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
-                                        oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
                                 }
-                                mixedImg += `<td><img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50"></td>`
+
+                                console.log("acronym: ", acronym)
+                                mixedImg += `
+                                    <td>
+                                        <img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50">${acronym ? ("<span class='acronym acronym-summary'>" + acronym + "</span>") : ""}
+                                    </td>
+                                `
                             } else {
                                 alert("@XMA: Reviewers number limit reached")
                             }
@@ -230,14 +246,17 @@ $( document ).ready( () =>  {
                             fileContent = `${ fileSummary.contents.length > 7 ? (fileSummary.contents.slice(0, 7) + "...") : fileSummary.contents}`
                         }
                         let oneUserImg = usersSummary[owner].userPic
+                        let acronym = ""
                         if (!oneUserImg) {
-                            oneUserImg = "https://static.proofme.com/0.1259.257/images/avatars/sphynx.png" // temp fix
+                            acronym = usersSummary[owner].acronym
+                            oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
                         } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
-                                oneUserImg = "https://static.proofme.com/0.1259.96" + oneUserImg
+                                oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
                         }
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children">
                                 <img src="${oneUserImg}" width=52 height=50></img>
+                                ${acronym ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
                                 <div><span>${shortedName} </span> • <span> ${time}<br /> ${ fileContent} </span></div>
                             </div>
                         `)

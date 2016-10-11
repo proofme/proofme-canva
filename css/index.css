@@ -182,6 +182,24 @@
     opacity: 0.5;
 }
 
+.acronym {
+    color: white;
+    font-size: 26px;
+    opacity: 0.8;
+    font-weight: 300;
+    cursor: default;
+}
+
+.acronym-decision {
+    position: fixed;
+    transform: translateX(-46px) translateY(13px);
+}
+
+.acronym-summary {
+    position: absolute;
+    transform: translateX(-38px) translateY(13px);
+}
+
 .clip-2 {
     position: absolute;
     clip: rect(0px,40px,50px,16px);
