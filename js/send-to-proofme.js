@@ -180,7 +180,6 @@ $( document ).ready( () =>  {
                         let count = 0
                         const userNames = []
                         _.forEach(users, user => {
-                            console.log("users: ", users)
                             count++
                             let acronym = ""
                             if (count < 6) {
@@ -193,7 +192,6 @@ $( document ).ready( () =>  {
                                     oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
                                 }
 
-                                console.log("acronym: ", acronym)
                                 mixedImg += `
                                     <td>
                                         <img class="${"clip-" + users.length}" src="${oneUserImg}" width="50" height="50">${acronym ? ("<span class='acronym acronym-summary'>" + acronym + "</span>") : ""}
