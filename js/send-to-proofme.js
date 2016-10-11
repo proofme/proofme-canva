@@ -168,7 +168,7 @@ $( document ).ready( () =>  {
                                 <img src="${oneUserImg}" width=52 height=50></img>
                                 ${acronymAvatar ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
                                 <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
+                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
                         `)
 
@@ -231,7 +231,7 @@ $( document ).ready( () =>  {
                                         </i>
                                     </span>
                                 </div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" width=50 height=50 onclick="window.open('${urlToProof}');"></img>
+                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlToProof}');"></img>
                             </div>
 
                         `)
@@ -732,7 +732,13 @@ $( document ).ready( () =>  {
                   pages.push(i)
               }
 
-              exportPDF(token, docId, pages, 1)
+
+              exportAfterSave() // not yet figure out how to trigger a canva save function
+              function exportAfterSave() {
+                  const documentSyncStatus = document.getElementById("documentSyncStatus").textContent
+                  if (documentSyncStatus == "No changes made" || documentSyncStatus == "All changes saved") return exportPDF(token, docId, pages, 1)
+                  return setTimeout( () => exportAfterSave(), 100)
+              }
 
             });
 
