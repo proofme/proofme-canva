@@ -76,7 +76,11 @@ $( document ).ready( () =>  {
             countToUse = totalCount
         }
 
-        classForCount += ("" + countToUse).length > 1? " two-digits-count": ""
+        if (("" + countToUse).length === 2) {
+            classForCount += " two-digits-count"
+        } else if (("" + countToUse).length === 3) {
+            classForCount += " three-digits-count"
+        }
 
         const openProofInnerHTML
             = `<li id="open-proof"><a class="button editorActionOpen prerollAnimation prerollDelay2.5" href="${urlToProof}" target="_blank"> Open Proof `
@@ -141,7 +145,7 @@ $( document ).ready( () =>  {
                         logger("fileSummary: ", fileSummary)
                         logger("fileSummary.users: ", fileSummary.users)
                         const userIds = fileSummary.users
-                        const oneUserId = userIds[0]
+                        const oneUserId = userIds ? userIds[0] : fileSummary.owner || fileSummary.proof_owner
                         // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
                         let oneUserImg = usersSummary[oneUserId].userPic
                         let acronymAvatar = false
@@ -158,17 +162,25 @@ $( document ).ready( () =>  {
                             userNames.push(user.userName)
                             acronym = user.acronym
                         })
+
+                        if (!userNames.length) userNames.push(usersSummary[oneUserId].userName)
                         const shortedName = whenUsernameTooLong(userNames)
                         let fileContent = ""
                         if (fileSummary.contents) {
                             fileContent = `${ fileSummary.contents.length > 7 ? (fileSummary.contents.slice(0, 7) + "...") : fileSummary.contents}`
                         }
+
+                        if (!fileSummary.name) {
+                            fileSummary.name = ""
+                        }
+                        const fileAvatar = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("files/" + fileSummary.file + "/thumb") :  ("proofs/thumb/" + fileSummary.proof) }`
+                        const urlOnFileAvatar = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("f/" + fileSummary.file) :  ("p/" + fileSummary.proof) }`
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children">
                                 <img src="${oneUserImg}" width=52 height=50></img>
                                 ${acronymAvatar ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
-                                <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlToProof}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name}</i>  ${ fileContent} </span></div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlToProof}');"></img>
+                                <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlOnFileAvatar}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent} </span></div>
+                                <img class="fileAvatar" src=${fileAvatar} height=50 onclick="window.open('${urlOnFileAvatar}');"></img>
                             </div>
                         `)
 
@@ -212,7 +224,13 @@ $( document ).ready( () =>  {
                             classForCount += "read-count"
                         }
 
-                        classForCount += ("" + countToUse).length > 1? " two-digits-count": ""
+                        if (("" + countToUse).length === 2) {
+                            classForCount += " two-digits-count"
+                        } else if (("" + countToUse).length === 3) {
+                            classForCount += " three-digits-count"
+                        }
+
+                        const urlOnFileThumbnail = `https://${proofmeCluster}proofme.com/f/${fileSummary.file}`
                         const shortedName = whenUsernameTooLong(userNames)
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children" style="height: 54px;">
@@ -226,12 +244,12 @@ $( document ).ready( () =>  {
                                 <div>
                                     <span>${shortedName} • ${time} <br />
                                         <span class="${classForCount}">${countToUse}</span>
-                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlToProof}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name }
+                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name }
                                             <img class="blue-arrow" src=${imageCollection.blueArrow} height="11">
                                         </i>
                                     </span>
                                 </div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlToProof}');"></img>
+                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlOnFileThumbnail}');"></img>
                             </div>
 
                         `)
@@ -387,12 +405,13 @@ $( document ).ready( () =>  {
             const reviewsSummary = []
 
             let unreadCount = 0
+            if (data.annotsSummary.unreadList) unreadCount = data.annotsSummary.totalCount
             _.forEach(filesSummary, fileSummary => {
                 if (fileSummary.comment_type && fileSummary.comment_type === "ReviewDraft") {
                     reviewsSummary.push(fileSummary)
                 } else {
 
-                    unreadCount += fileSummary.unread
+                    // unreadCount += fileSummary.unread
                 }
             })
             const totalCount = data.totalCountOfAnnots

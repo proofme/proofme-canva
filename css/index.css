@@ -166,6 +166,10 @@
     background-size: 27px 19px !important;
 }
 
+.three-digits-count{
+    background-size: 35px 19px !important;
+}
+
 .fileAvatar{
         float: right !important;
         cursor: pointer;
