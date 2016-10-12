@@ -26,9 +26,10 @@ $( document ).ready( () =>  {
         askProofMe()
     }
 
-    function whenUsernameTooLong(userNames) {
+    function whenUsernameTooLong(userNames, length) {
+        length = length || 20
         const joinName = userNames.join(", ")
-        if (joinName.length > 23) return joinName.slice(0, 20) + "..."
+        if (joinName.length > length) return joinName.slice(0, length - 3) + "..."
 
         return joinName
     }
@@ -167,7 +168,7 @@ $( document ).ready( () =>  {
                         const shortedName = whenUsernameTooLong(userNames)
                         let fileContent = ""
                         if (fileSummary.contents) {
-                            fileContent = `${ fileSummary.contents.length > 7 ? (fileSummary.contents.slice(0, 7) + "...") : fileSummary.contents}`
+                            fileContent = `${ fileSummary.contents.length > 14 ? (fileSummary.contents.slice(0, 11) + "...") : fileSummary.contents}`
                         }
 
                         if (!fileSummary.name) {
@@ -180,7 +181,7 @@ $( document ).ready( () =>  {
                                 <img src="${oneUserImg}" width=52 height=50></img>
                                 ${acronymAvatar ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
                                 <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlOnFileAvatar}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent} </span></div>
-                                <img class="fileAvatar" src=${fileAvatar} height=50 onclick="window.open('${urlOnFileAvatar}');"></img>
+                                <div class="fileAvatarContainer"><img class="fileAvatar" src=${fileAvatar} onclick="window.open('${urlOnFileAvatar}');"></img></div>
                             </div>
                         `)
 
@@ -244,12 +245,14 @@ $( document ).ready( () =>  {
                                 <div>
                                     <span>${shortedName} • ${time} <br />
                                         <span class="${classForCount}">${countToUse}</span>
-                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : fileSummary.name }
+                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ fileSummary.name.length > 30 ? (fileSummary.name.slice(0, 27) + "...") : fileSummary.name }
                                             <img class="blue-arrow" src=${imageCollection.blueArrow} height="11">
                                         </i>
                                     </span>
                                 </div>
-                                <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" height=50 onclick="window.open('${urlOnFileThumbnail}');"></img>
+                                <div class="fileAvatarContainer">
+                                    <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" onclick="window.open('${urlOnFileThumbnail}');"></img>
+                                </div>
                             </div>
 
                         `)
@@ -259,7 +262,7 @@ $( document ).ready( () =>  {
                         const shortedName = whenUsernameTooLong(userNames)
                         let fileContent = ""
                         if (fileSummary.contents) {
-                            fileContent = `${ fileSummary.contents.length > 7 ? (fileSummary.contents.slice(0, 7) + "...") : fileSummary.contents}`
+                            fileContent = `${ fileSummary.contents.length > 30 ? (fileSummary.contents.slice(0, 27) + "...") : fileSummary.contents}`
                         }
                         let oneUserImg = usersSummary[owner].userPic
                         let acronym = ""
@@ -274,6 +277,9 @@ $( document ).ready( () =>  {
                                 <img src="${oneUserImg}" width=52 height=50></img>
                                 ${acronym ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
                                 <div><span>${shortedName} </span> • <span> ${time}<br /> ${ fileContent} </span></div>
+                                <div class="fileAvatarContainer">
+                                    <img class="managerNote" src="${imageCollection.managerNote}");"></img>
+                                </div>
                             </div>
                         `)
                     } else {
@@ -797,5 +803,6 @@ const imageCollection = {
     rejectThumbRed: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-red%402x.png",
     rejectThumbWhite: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-white%402x.png",
     bubbleWithDot: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/bubble-with-dot%402x.png",
-    blueArrow: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/Asset%205%402x.png"
+    blueArrow: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/Asset%205%402x.png",
+    managerNote: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/owner-note.png"
 }

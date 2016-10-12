@@ -171,8 +171,29 @@
 }
 
 .fileAvatar{
-        float: right !important;
-        cursor: pointer;
+    max-width:50px;
+    max-height:50px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+
+.fileAvatarContainer {
+    height: 50px;
+    width: 50px;
+    position: relative;
+    float: right !important;
+    margin: 0;
+}
+
+.managerNote {
+    float: right;
+    height: 20px;
+    width: 20px;
 }
 
 .magicHr {
