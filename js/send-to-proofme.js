@@ -143,45 +143,78 @@ $( document ).ready( () =>  {
                     const time = moment(fileSummary.updated_timestamp).fromNow(true)
                     logger("time: ", time)
                     if (fileSummary.comment_type === "ReviewDraft") {
-                        logger("fileSummary: ", fileSummary)
-                        logger("fileSummary.users: ", fileSummary.users)
-                        const userIds = fileSummary.users
-                        const oneUserId = userIds ? userIds[0] : fileSummary.owner || fileSummary.proof_owner
-                        // const oneUserImg = `https://${proofmeCluster}proofme.com${usersSummary[oneUserId].userPic}`
-                        let oneUserImg = usersSummary[oneUserId].userPic
-                        let acronymAvatar = false
-                        if (!oneUserImg) {
-                            acronymAvatar = true
-                            oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
-                        } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
-                                oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
-                        }
-                        const userNames = []
-                        let acronym = ""
-                        _.forEach(userIds, userId => {
-                            const user = usersSummary[userId]
-                            userNames.push(user.userName)
-                            acronym = user.acronym
+
+                        let userIds = fileSummary.users
+                        _.forEach(fileSummary.replies, reply => {
+                            userIds = _.unionWith(userIds, [reply.owner])
                         })
 
-                        if (!userNames.length) userNames.push(usersSummary[oneUserId].userName)
-                        const shortedName = whenUsernameTooLong(userNames)
-                        let fileContent = ""
-                        if (fileSummary.contents) {
-                            fileContent = `${ fileSummary.contents.length > 14 ? (fileSummary.contents.slice(0, 11) + "...") : fileSummary.contents}`
+                        let mixedImg = ""
+                        let count = 0
+                        const userNames = []
+                        _.forEach(userIds, userId => {
+                            count++
+                            let acronym = ""
+                            if (count < 6) {
+                                userNames.push(usersSummary[userId].userName)
+                                let oneUserImg = usersSummary[userId].userPic
+                                if (!oneUserImg) {
+                                    if (users.length === 1) acronym = usersSummary[userId].acronym
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
+                                } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
+                                }
+
+                                mixedImg += `
+                                    <td>
+                                        <img class="${"clip-" + userIds.length}" src="${oneUserImg}" width="50" height="50">${acronym ? ("<span class='acronym acronym-summary'>" + acronym + "</span>") : ""}
+                                    </td>
+                                `
+                            } else {
+                                alert("@XMA: Reviewers number limit reached")
+                            }
+                        })
+                        const countToUse = 1 + (fileSummary.replies && fileSummary.replies.length || 0)
+                        let classForCount = ""
+                        if (unreadCount) {
+                            classForCount += "unread-count"
+                        } else {
+                            classForCount += "read-count"
                         }
 
-                        if (!fileSummary.name) {
-                            fileSummary.name = ""
+                        if (("" + countToUse).length === 2) {
+                            classForCount += " two-digits-count"
+                        } else if (("" + countToUse).length === 3) {
+                            classForCount += " three-digits-count"
                         }
-                        const fileAvatar = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("files/" + fileSummary.file + "/thumb") :  ("proofs/thumb/" + fileSummary.proof) }`
-                        const urlOnFileAvatar = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("f/" + fileSummary.file) :  ("p/" + fileSummary.proof) }`
+
+                        const urlOnFileThumbnail = `https://${proofmeCluster}proofme.com/f/${fileSummary.file}`
+                        const shortedName = whenUsernameTooLong(userNames, 15)
+                        let fileContent = ""
+                        if (fileSummary.replies && fileSummary.replies.length) {
+                            const reply = fileSummary.replies[fileSummary.replies.length - 1]
+                            fileContent = `${ reply.contents.length > 14 ? (reply.contents.slice(0, 11) + "...") : reply.contents}`
+                        }
+                        else if (fileSummary.contents) {
+                            fileContent = `${ fileSummary.contents.length > 14 ? (fileSummary.contents.slice(0, 11) + "...") : fileSummary.contents}`
+                        }
                         listitem = $(`
-                            <div class="annotation-item clearfix float-my-children">
-                                <img src="${oneUserImg}" width=52 height=50></img>
-                                ${acronymAvatar ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
-                                <div><span>${shortedName} </span>  <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> • <span> ${time}<br /> <i style="cursor:pointer;" onclick="window.open('${urlOnFileAvatar}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent} </span></div>
-                                <div class="fileAvatarContainer"><img class="fileAvatar" src=${fileAvatar} onclick="window.open('${urlOnFileAvatar}');"></img></div>
+                            <div class="annotation-item clearfix float-my-children" style="height: 54px;">
+                                <table width=52px cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            ${mixedImg}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <span>${shortedName} <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
+                                        <i style="cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent}
+                                    </span>
+                                </div>
+                                <div class="fileAvatarContainer">
+                                    <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" onclick="window.open('${urlOnFileThumbnail}');"></img>
+                                </div>
                             </div>
                         `)
 
@@ -258,25 +291,74 @@ $( document ).ready( () =>  {
                         `)
                     } else if (fileSummary.comment_type === "ManagerNote") {
                         const owner = fileSummary.owner || fileSummary.proof_owner
-                        const userNames = [usersSummary[owner].userName]
-                        const shortedName = whenUsernameTooLong(userNames)
-                        let fileContent = ""
-                        if (fileSummary.contents) {
-                            fileContent = `${ fileSummary.contents.length > 30 ? (fileSummary.contents.slice(0, 27) + "...") : fileSummary.contents}`
+                        let userIds = [usersSummary[owner].id]
+                        _.forEach(fileSummary.replies, reply => {
+                            userIds = _.unionWith(userIds, [reply.owner])
+                        })
+
+                        let mixedImg = ""
+                        let count = 0
+                        const userNames = []
+                        _.forEach(userIds, userId => {
+                            count++
+                            let acronym = ""
+                            if (count < 6) {
+                                userNames.push(usersSummary[userId].userName)
+                                let oneUserImg = usersSummary[userId].userPic
+                                if (!oneUserImg) {
+                                    if (users.length === 1) acronym = usersSummary[userId].acronym
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
+                                } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
+                                    oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
+                                }
+
+                                mixedImg += `
+                                    <td>
+                                        <img class="${"clip-" + userIds.length}" src="${oneUserImg}" width="50" height="50">${acronym ? ("<span class='acronym acronym-summary'>" + acronym + "</span>") : ""}
+                                    </td>
+                                `
+                            } else {
+                                alert("@XMA: Reviewers number limit reached")
+                            }
+                        })
+                        const countToUse = 1 + (fileSummary.replies && fileSummary.replies.length || 0)
+                        let classForCount = ""
+                        if (unreadCount) {
+                            classForCount += "unread-count"
+                        } else {
+                            classForCount += "read-count"
                         }
-                        let oneUserImg = usersSummary[owner].userPic
-                        let acronym = ""
-                        if (!oneUserImg) {
-                            acronym = usersSummary[owner].acronym
-                            oneUserImg = `https://static.proofme.com/${proofmeBuild}/images/backgrounds/acronym-avatar-bg.jpg` // temp fix
-                        } else if (! (oneUserImg.includes("https://") || oneUserImg.includes("avatars.proofme.com"))) {
-                                oneUserImg = `https://static.proofme.com/${proofmeBuild}` + oneUserImg
+
+                        if (("" + countToUse).length === 2) {
+                            classForCount += " two-digits-count"
+                        } else if (("" + countToUse).length === 3) {
+                            classForCount += " three-digits-count"
+                        }
+
+                        const urlOnFileThumbnail = `https://${proofmeCluster}proofme.com/f/${fileSummary.file}`
+                        const shortedName = whenUsernameTooLong(userNames, 15)
+                        let fileContent = ""
+                        if (fileSummary.replies && fileSummary.replies.length) {
+                            const reply = fileSummary.replies[fileSummary.replies.length - 1]
+                            fileContent = `${ reply.contents.length > 40 ? (reply.contents.slice(0, 37) + "...") : reply.contents}`
+                        }
+                        else if (fileSummary.contents) {
+                            fileContent = `${ fileSummary.contents.length > 40 ? (fileSummary.contents.slice(0, 37) + "...") : fileSummary.contents}`
                         }
                         listitem = $(`
-                            <div class="annotation-item clearfix float-my-children">
-                                <img src="${oneUserImg}" width=52 height=50></img>
-                                ${acronym ? ("<span class='acronym acronym-decision'>" + acronym + "</span>") : ""}
-                                <div><span>${shortedName} </span> • <span> ${time}<br /> ${ fileContent} </span></div>
+                            <div class="annotation-item clearfix float-my-children" style="height: 54px;">
+                                <table width=52px cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            ${mixedImg}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <span>${shortedName} <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
+                                        ${ fileContent}
+                                    </span>
+                                </div>
                                 <div class="fileAvatarContainer">
                                     <img class="managerNote" src="${imageCollection.managerNote}");"></img>
                                 </div>
