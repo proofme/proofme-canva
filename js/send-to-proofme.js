@@ -144,7 +144,7 @@ $( document ).ready( () =>  {
                     logger("time: ", time)
                     if (fileSummary.comment_type === "ReviewDraft") {
 
-                        let userIds = fileSummary.users
+                        let userIds = fileSummary.users || [fileSummary.owner || fileSummary.proof_owner]
                         _.forEach(fileSummary.replies, reply => {
                             userIds = _.unionWith(userIds, [reply.owner])
                         })
@@ -188,7 +188,8 @@ $( document ).ready( () =>  {
                             classForCount += " three-digits-count"
                         }
 
-                        const urlOnFileThumbnail = `https://${proofmeCluster}proofme.com/f/${fileSummary.file}`
+                        const fileAvatar = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("files/" + fileSummary.file + "/thumb") :  ("proofs/thumb/" + fileSummary.proof) }`
+                        const urlOnFileThumbnail = `https://${proofmeCluster}proofme.com/${ fileSummary.file ? ("f/" + fileSummary.file) :  ("p/" + fileSummary.proof) }`
                         const shortedName = whenUsernameTooLong(userNames, 15)
                         let fileContent = ""
                         if (fileSummary.replies && fileSummary.replies.length) {
@@ -198,6 +199,7 @@ $( document ).ready( () =>  {
                         else if (fileSummary.contents) {
                             fileContent = `${ fileSummary.contents.length > 14 ? (fileSummary.contents.slice(0, 11) + "...") : fileSummary.contents}`
                         }
+                        if (!fileSummary.name) fileSummary.name = ""
                         listitem = $(`
                             <div class="annotation-item clearfix float-my-children" style="height: 54px;">
                                 <table width=52px cellspacing="0">
@@ -213,7 +215,7 @@ $( document ).ready( () =>  {
                                     </span>
                                 </div>
                                 <div class="fileAvatarContainer">
-                                    <img class="fileAvatar" src="https://${proofmeCluster}proofme.com/files/${fileSummary.file}/thumb" onclick="window.open('${urlOnFileThumbnail}');"></img>
+                                    <img class="fileAvatar" src="${fileAvatar}" onclick="window.open('${urlOnFileThumbnail}');"></img>
                                 </div>
                             </div>
                         `)
