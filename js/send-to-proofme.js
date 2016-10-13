@@ -210,8 +210,8 @@ $( document ).ready( () =>  {
                                     </tbody>
                                 </table>
                                 <div>
-                                    <span>${shortedName} <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
-                                        <i style="cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent}
+                                    <span>${shortedName.escape()} <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
+                                        <i style="cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent.escape()}
                                     </span>
                                 </div>
                                 <div class="fileAvatarContainer">
@@ -278,7 +278,7 @@ $( document ).ready( () =>  {
                                     </tbody>
                                 </table>
                                 <div>
-                                    <span>${shortedName} • ${time} <br />
+                                    <span>${shortedName.escape()} • ${time} <br />
                                         <span class="${classForCount}">${countToUse}</span>
                                         <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ fileSummary.name.length > 30 ? (fileSummary.name.slice(0, 27) + "...") : fileSummary.name }
                                             <img class="blue-arrow" src=${imageCollection.blueArrow} height="11">
@@ -357,8 +357,8 @@ $( document ).ready( () =>  {
                                     </tbody>
                                 </table>
                                 <div>
-                                    <span>${shortedName} <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
-                                        ${ fileContent}
+                                    <span>${shortedName.escape()} <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
+                                        ${ fileContent.escape()}
                                     </span>
                                 </div>
                                 <div class="fileAvatarContainer">
@@ -890,3 +890,14 @@ const imageCollection = {
     blueArrow: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/Asset%205%402x.png",
     managerNote: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/owner-note.png"
 }
+
+String.prototype.escape = function() {
+    const tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return this.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+};
