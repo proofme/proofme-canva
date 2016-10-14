@@ -97,7 +97,11 @@ $( document ).ready( () =>  {
 
         emptyBtnExist = true
         $("#documentMenu").prepend(openProofInnerHTML)
-
+        if (!totalCount) {
+            $('#openup').remove()
+            $('.proofme-details-popup').remove()
+            return
+        }
 
 
         $("#openup").click( (e) => {
@@ -211,7 +215,7 @@ $( document ).ready( () =>  {
                                 </table>
                                 <div>
                                     <span>${shortedName.escape()} <img src="${fileSummary.status === '1'? imageCollection.approveThumbGreen: imageCollection.rejectThumbRed}" width=12 height=13 >  </img> <span class="${classForCount}"> ${countToUse}</span> • ${time} <br />
-                                        <i style="cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19)) : (fileSummary.name)} &nbsp</i>  ${ fileContent.escape()}
+                                        <i style="cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${(fileSummary.name.length > 22 ? (fileSummary.name.slice(0, 19) + "...") : (fileSummary.name)).escape()} &nbsp</i>  ${ fileContent.escape()}
                                     </span>
                                 </div>
                                 <div class="fileAvatarContainer">
@@ -280,7 +284,7 @@ $( document ).ready( () =>  {
                                 <div>
                                     <span>${shortedName.escape()} • ${time} <br />
                                         <span class="${classForCount}">${countToUse}</span>
-                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ fileSummary.name.length > 30 ? (fileSummary.name.slice(0, 27) + "...") : fileSummary.name }
+                                        <i class="filename-and-arrow" style="color: #00c4cc; cursor:pointer;" onclick="window.open('${urlOnFileThumbnail}');">${ (fileSummary.name.length > 30 ? (fileSummary.name.slice(0, 27) + "...") : fileSummary.name).escape() }
                                             <img class="blue-arrow" src=${imageCollection.blueArrow} height="11">
                                         </i>
                                     </span>
@@ -490,6 +494,11 @@ $( document ).ready( () =>  {
         }
         if (event.data.reason === "windowOnLoad") {
             const data = event.data
+            if (data.notFound) {
+                proofExists = false
+                if (document.getElementById("open-proof")) document.getElementById("open-proof").remove()
+                return
+            }
             const filesSummary = data.annotsSummary.annots
             const usersSummary = data.annotsSummary.users
             const reviewsSummary = []
@@ -509,7 +518,8 @@ $( document ).ready( () =>  {
             logger("unreadCount: ", unreadCount)
             logger("proofUrl: ", data.proofUrl)
             proofExists = true
-            if (totalCount > 0) {
+            proofId = data.proofId
+            if (totalCount >= 0) {
                 if (JSON.stringify(tooptipCache) !== JSON.stringify(data)) setDocumentHasProof(filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, data.proofUrl, totalCount)
             } else {
                 if (!emptyBtnExist) {
