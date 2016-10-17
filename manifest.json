@@ -3,7 +3,7 @@
 
   "name": "ProofMe for Canva",
   "description": "Create proofs from your designs without leaving Canva. Add the power of visual review to the world’s easiest design app.",
-  "version": "0.0.6",
+  "version": "0.0.7",
 
   "icons": {
       "16": "images/proofme-icon-chrome-store-16.png",

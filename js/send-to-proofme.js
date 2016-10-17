@@ -104,7 +104,8 @@ $( document ).ready( () =>  {
         }
 
 
-        $("#openup").click( (e) => {
+        /*Take proofme sources here. NOt need reimplement it here*/
+      /*  $("#openup").click( (e) => {
             e.stopPropagation()
             return false;
         })
@@ -454,7 +455,7 @@ $( document ).ready( () =>  {
                     return false
                 })
             }
-        )
+        )*/
 
 
     }
