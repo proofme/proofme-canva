@@ -61,7 +61,7 @@ $( document ).ready( () =>  {
         proofId = proofId || filesSummary[0].proof
         logger("===: ", filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl)
         $('.buttonProofMe').html(`
-            <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-version%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+            <img src='../images/icon-create-version%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
             Update Proof
         `)
 
@@ -125,7 +125,7 @@ $( document ).ready( () =>  {
                     ? popup.append(`
                         <div class="header">
                             <span style="color: #3f4652;">Unread Comments</span>
-                            <span style="float: right"><span class="markAsRead" style="color: #00c4cc; cursor:pointer;">Mark as read</span> <img class="hide-loader" src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/loader.gif">• <span style="color: #00c4cc; cursor:pointer; padding-right: 10px;" onclick="window.open('${urlToProof}');">View All</span></span>
+                            <span style="float: right"><span class="markAsRead" style="color: #00c4cc; cursor:pointer;">Mark as read</span> <img class="hide-loader" src="../images/loader.gif">• <span style="color: #00c4cc; cursor:pointer; padding-right: 10px;" onclick="window.open('${urlToProof}');">View All</span></span>
                         </div><hr class="magicHr" />
                     `)
                     : popup.append(`
@@ -616,7 +616,7 @@ $( document ).ready( () =>  {
                             if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
                             buttonsDom.append(`
                                 <button class="button buttonProofMe buttonRedirect" title="Share on ProofMe">
-                                <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+                                <img src='../images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
                                 ${proofExists?"Update Proof" : "Make a Proof"}
                                 </button>
                             `)
@@ -635,7 +635,7 @@ $( document ).ready( () =>  {
                                             </div>
                                             <div class="centerPart">
                                                 <div class="circleLogo">
-                                                    <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
+                                                    <img src="../images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                                                 </div>
                                                 <span id="loading-message">Exporting your design to ProofMe...</span>
                                                 <div class="beforeProgressBar" style="height: 18px;"> </div>
@@ -714,7 +714,7 @@ $( document ).ready( () =>  {
         logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
         buttonsDom.append(`
             <button class="button buttonProofMe buttonExport" title="Share on ProofMe">
-            <img src='https://raw.githubusercontent.com/proofme/proofme-canva/master/images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
+            <img src='../images/icon-create-${proofExists?"version" : "proof"}%402x.png' alt="ProofMe" style="height: 20px; width: 20px; vertical-align: text-bottom;">
             ${proofExists?"Update Proof" : "Make a Proof"}
             </button>
         `)
@@ -732,7 +732,7 @@ $( document ).ready( () =>  {
                         </div>
                         <div class="centerPart">
                             <div class="circleLogo">
-                                <img src="https://raw.githubusercontent.com/proofme/proofme-canva/master/images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
+                                <img src="../images/canva-sending-1%402x.png" alt="ProofMe" style="height:80px; width:80px;">
                             </div>
                             <span id="loading-message">Exporting your design to ProofMe...</span>
                             <div class="beforeProgressBar" style="height: 18px;"> </div>
@@ -893,13 +893,13 @@ function getARandomMessage () {
 }
 
 const imageCollection = {
-    approveThumbGreen: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/approve-thumb-green%402x.png",
-    approveThumbWhite: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/approve-thumb-white%402x.png",
-    rejectThumbRed: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-red%402x.png",
-    rejectThumbWhite: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/reject-thumb-white%402x.png",
-    bubbleWithDot: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/bubble-with-dot%402x.png",
-    blueArrow: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/proof-update-dropdown-icons/Asset%205%402x.png",
-    managerNote: "https://raw.githubusercontent.com/proofme/proofme-canva/master/images/owner-note.png"
+    approveThumbGreen: "../images/proof-update-dropdown-icons/approve-thumb-green%402x.png",
+    approveThumbWhite: "../images/proof-update-dropdown-icons/approve-thumb-white%402x.png",
+    rejectThumbRed: "../images/proof-update-dropdown-icons/reject-thumb-red%402x.png",
+    rejectThumbWhite: "../images/proof-update-dropdown-icons/reject-thumb-white%402x.png",
+    bubbleWithDot: "../images/proof-update-dropdown-icons/bubble-with-dot%402x.png",
+    blueArrow: "../images/proof-update-dropdown-icons/Asset%205%402x.png",
+    managerNote: "../images/owner-note.png"
 }
 
 String.prototype.escape = function() {

@@ -135,7 +135,7 @@
     color: white;
     padding-left: 5px;
     padding-right: 6px;
-    background-image: url("images/proof-update-dropdown-icons/bubble-blue%402x.png");
+    background-image: url("../images/proof-update-dropdown-icons/bubble-blue%402x.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -144,7 +144,7 @@
     color: white;
     padding-left: 5px;
     padding-right: 6px;
-    background-image: url("images/icon-counter-bubble3.png");
+    background-image: url("../images/icon-counter-bubble3.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -157,7 +157,7 @@
     color: #00c4cc;
     padding-left: 5px;
     padding-right: 6px;
-    background-image: url("images/proof-update-dropdown-icons/bubble-white%402x.png");
+    background-image: url("../images/proof-update-dropdown-icons/bubble-white%402x.png");
     background-repeat: no-repeat;
     background-size: contain;
 }
