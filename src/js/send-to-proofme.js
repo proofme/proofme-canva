@@ -48,13 +48,16 @@ $( document ).ready( () =>  {
         }, '*');
     }
 
+    var firstAsk = true
 
     ;(function keepAskingProofMe(){
+
             setTimeout( () => {
                 logger("asking proofme")
                 askProofMe()
                 keepAskingProofMe()
-            }, 3000)
+            }, (firstAsk? 1000 : 20000) )
+            firstAsk = false;
     })()
 
     function setDocumentHasProof(filesSummary, usersSummary, reviewsSummary, totalCount, unreadCount, proofUrl, itemCount){
