@@ -664,6 +664,7 @@ $( document ).ready( () =>  {
                                 $(".closePopup").on("click", function() {
                                     $(".dialog").show()
                                     progressDialog.remove()
+                                    $("body").removeClass("modalContentVisible modalContentBlurAndDarkenVisible" )
                                 })
 
                                 $(document).keyup(e => {
@@ -762,6 +763,7 @@ $( document ).ready( () =>  {
                 document.getElementsByTagName("body")[0].setAttribute("data-modal-levels", "0")
                 progressDialog.remove()
                 $(".modalContent").remove()
+                $("body").removeClass("modalContentVisible modalContentBlurAndDarkenVisible" )
             })
 
             $(document).keyup(e => {
