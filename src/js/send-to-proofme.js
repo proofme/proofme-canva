@@ -608,7 +608,7 @@ $( document ).ready( () =>  {
                             popupClosed = true
                         })
                         logger("popupClosed: ", popupClosed)
-                        if ($(".center").html() === "Your design is ready" && !popupClosed) {
+                        if ($(".center").html() === "Your design is ready and downloading" && !popupClosed) {
                             $(".buttonRedirect").remove()
                             let buttonsDom = []
                             const shareButtons = $(".shareButtons")
