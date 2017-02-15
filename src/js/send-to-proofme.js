@@ -611,9 +611,9 @@ $( document ).ready( () =>  {
                         if ($(".center").html() === "Your design is ready and downloading" && !popupClosed) {
                             $(".buttonRedirect").remove()
                             let buttonsDom = []
-                            const shareButtons = $(".shareButtons")
+                            const shareButtons = $(".shareButtons") 
                             if (shareButtons.length) buttonsDom = shareButtons
-                            const shareDialog__socialButtons= $(".shareDialog__socialButtons")
+                            const shareDialog__socialButtons= $(".shareDialog__buttons")
                             logger("shareButtons: ", shareButtons)
                             logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
                             if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
@@ -712,7 +712,7 @@ $( document ).ready( () =>  {
         let buttonsDom = []
         const shareButtons = $(".shareButtons")
         if (shareButtons.length) buttonsDom = shareButtons
-        const shareDialog__socialButtons= $(".shareDialog__socialButtons")
+        const shareDialog__socialButtons= $(".shareDialog__buttons")
         if (shareDialog__socialButtons.length) buttonsDom = shareDialog__socialButtons
         logger("shareButtons: ", shareButtons)
         logger("shareDialog__socialButtons: ", shareDialog__socialButtons)
